@@ -27,7 +27,8 @@ namespace Web.Helpers.Implementations
             "ConnectionString",
             "Emulation:ConnectionString",
             "Emulation:Enabled",
-            "Yandex:MapsJavaScriptAPIKey"
+            "Yandex:MapsJavaScriptAPIKey",
+            "Server:IP"
         };
 
         private readonly IHostingEnvironment _env;
@@ -86,6 +87,10 @@ namespace Web.Helpers.Implementations
 
         public string ConnectionString => Emulator.IsEmulationEnabled ? Settings["Emulation:ConnectionString"].ToString() : Settings["ConnectionString"].ToString();
 
+        public string IdentityConnectionString => Settings["ConnectionString"].ToString();
+
         public string YandexMapsJavaScriptAPIKey => Settings["Yandex:MapsJavaScriptAPIKey"].ToString();
+
+        public string ServerIP => Settings["Server:IP"].ToString();
     }
 }

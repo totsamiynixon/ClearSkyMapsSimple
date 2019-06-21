@@ -55,7 +55,6 @@ namespace Web
             services.AddTransient<IRepository, Repository>();
             services.AddTransient<IPollutionCalculator, PollutionCalculator>();
             services.AddTransient<ISensorCacheHelper, SensorCacheHelper>();
-            services.AddTransient<ISensorConnectionHelper, SensorWebSocketConnectionHelper>();
             services.AddTransient<IPWADispatchHelper, PWASignalrDispatchHelper>();
             services.AddTransient<IAdminDispatchHelper, AdminSignalRHubDispatchHelper>();
             services.AddTransient<IPWABootstrapper, PWAFileCompilerBootstrapper>();
@@ -81,13 +80,30 @@ namespace Web
                             ((ISettingsProvider)scope.ServiceProvider.GetService(typeof(ISettingsProvider))).ConnectionString);
                     }
                 }
+            }, ServiceLifetime.Transient)
+            ;
+            services.AddDbContext<IdentityDbContext>(options =>
+            {
+
+                var scopeFactory = services
+                   .BuildServiceProvider()
+                   .GetRequiredService<IServiceScopeFactory>();
+
+                using (var scope = scopeFactory.CreateScope())
+                {
+                    {
+                        options.UseSqlServer(
+                            ((ISettingsProvider)scope.ServiceProvider.GetService(typeof(ISettingsProvider))).IdentityConnectionString);
+                    }
+                }
             }, ServiceLifetime.Transient);
+
             services.AddDefaultIdentity<User>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddUserManager<UserManager<User>>()
                 .AddRoles<IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()
-                .AddEntityFrameworkStores<DataContext>();
+                .AddEntityFrameworkStores<IdentityDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMemoryCache();
@@ -95,6 +111,7 @@ namespace Web
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
              .AddCookie(options =>
                 {
+                    options.Cookie.Name = "CSM.Auth";
                     options.LoginPath = new PathString("/Admin/Account/Login");
                 });
 
@@ -112,9 +129,9 @@ namespace Web
             {
                 return _scopeFactory.CreateScope().ServiceProvider;
             };
-            //ConfigureLogging(loggerFactory);
+            ConfigureLogging(loggerFactory);
             app.UseMiddleware<ExceptionHandlerMiddleware>();
-            app.UseHttpsRedirection();
+           // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
