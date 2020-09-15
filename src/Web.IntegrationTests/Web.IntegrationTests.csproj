@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="xunit.config.json">
+      <Content Update="xunit.runner.json">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
