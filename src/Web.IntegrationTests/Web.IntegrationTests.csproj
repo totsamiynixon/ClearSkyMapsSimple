@@ -27,4 +27,12 @@
       <ProjectReference Include="..\Web\Web.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="xunit.config.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
