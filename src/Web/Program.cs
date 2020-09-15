@@ -42,8 +42,8 @@ namespace Web
                     var env = context.HostingEnvironment;
                     builder
                         .AddJsonFile("appsettings.json", false, true)
-                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
-                    builder.AddEnvironmentVariables();
+                        .AddJsonFile($"appsettings.override.json", true, true);
+                    builder.AddEnvironmentVariables("APP__");
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {

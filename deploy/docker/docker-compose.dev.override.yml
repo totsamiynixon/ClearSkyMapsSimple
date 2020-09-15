@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  
+  web-sql-server:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "6433:1433"
+
+  web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - APP__Settings__ConnectionString=Server=web-sql-server;Initial Catalog=CSM.Dev;User ID=sa;Password=Pass@word;
+      - APP__FirebaseCloudMessaging__ServerKey=AAAALkpa7_A:APA91bEiLPnWhQ1ClqGyWLvRNf4gmHw36tadx3HjFkdR3tYvt7igAgBeZH4y6rO1Rvjak9S17sEEhNu5g4phQ9cb5v68CGR8ELBouqzsryzGpjskHVA2w4mbr4uNPuZt-xA5AyEmwt06
+      - APP__FirebaseCloudMessaging__MessagingSenderId=198815969264
+      - APP__Settings__Version=1.0.0
+      - APP__Settings__ServerUrl=http://localhost
+      - APP__Emulation__ConnectionString=Server=web-sql-server;Initial Catalog=CSM.Dev.EMU;User ID=sa;Password=Pass@word;
+      - APP__Emulation__Enabled=true
+      - APP__Admin__JWT__SecretKey='this is my custom Secret key for authnetication'
+      - APP__Admin__JWT__Issuer=https://localhost
+      - APP__Admin__JWT__Audience=https://localhost
+      - APP__PWA__Yandex__MapsJavaScriptAPIKey=45882cea-9147-4b9b-8799-b60d181dec3b
+    build:
+      dockerfile: Web.Dockerfile
+    ports:
+      - "5080:80"
+      - "5433:433"

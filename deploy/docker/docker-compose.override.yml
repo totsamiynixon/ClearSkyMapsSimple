@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+  
+  web-sql-server:
+    environment:
+      - SA_PASSWORD=${SQLSERVER__SA_PASSWORD}
+      - ACCEPT_EULA=Y
+    ports:
+      - "6433:1433"
+
+  web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - APP__Settings__ConnectionString=${APP__Settings__ConnectionString}
+      - APP__FirebaseCloudMessaging__ServerKey=${APP__FirebaseCloudMessaging__ServerKey}
+      - APP__FirebaseCloudMessaging__MessagingSenderId=${APP__FirebaseCloudMessaging__MessagingSenderId}
+      - APP__Settings__Version=${APP__Settings__Version}
+      - APP__Settings__ServerUrl=${APP__Settings__ServerUrl}
+      - APP__Emulation__ConnectionString=${APP__Emulation__ConnectionString}
+      - APP__Emulation__Enabled=${APP__Emulation__Enabled}
+      - APP__Admin__JWT__SecretKey=${APP__Admin__JWT__SecretKey}
+      - APP__Admin__JWT__Issuer=${APP__Admin__JWT__Issuer}
+      - APP__Admin__JWT__Audience=${APP__Admin__JWT__Audience}
+      - APP__PWA__Yandex__MapsJavaScriptAPIKey=${APP__PWA__Yandex__MapsJavaScriptAPIKey}
+    build:
+      dockerfile: Web.Dockerfile
+    ports:
+      - "5080:80"
+      - "5433:433"

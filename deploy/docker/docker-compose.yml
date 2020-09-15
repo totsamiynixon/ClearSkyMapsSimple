@@ -7,5 +7,7 @@ services:
 
   web:
     image: web
+    build:
+      context: ../
     depends_on:
       - web-sql-server

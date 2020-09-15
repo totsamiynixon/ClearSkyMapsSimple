@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+
+  web-test-sql-server:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "6433:1433"
+
+  web-integration-test:
+    build:
+      dockerfile: Web.Dockerfile
+      target: integration-tests
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - APP__Settings__ConnectionString=web-test-sql-server;Initial Catalog=CSM.Tests.Dev.Tests.{Id};User ID=sa;Password=Pass@word;
+      - APP__Settings__ServerUrl=https://localhost
+      - APP__Admin__JWT__Issuer=https://localhost
+      - APP__Admin__JWT__Audience=https://localhost
+    ports:
+      - "5080:80"
+      - "5433:433"
+    entrypoint:
+        - dotnet
+        - test
+        - --logger
+        - trx;
+        - 
+  web-unit-test:
+    build:
+      dockerfile: Web.Dockerfile
+      target: unit-tests
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    entrypoint:
+      - dotnet
+      - test
+      - --logger
+      - trx;

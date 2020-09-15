@@ -110,11 +110,6 @@
     <None Include="wwwroot\pwa\js\libs\vue.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Update="appsettings.Development.json">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Update="appsettings.json">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -132,4 +127,7 @@
   <ItemGroup>
     <Folder Include="Areas\PWA\Models" />
   </ItemGroup>
+  <Target Name="CompilePWA" AfterTargets="Build">
+    <Exec Command="powershell.exe ./compilepwa.ps1 --rootPath=./" />
+  </Target>
 </Project>

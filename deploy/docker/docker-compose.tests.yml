@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+  web-test-sql-server:
+    image: mcr.microsoft.com/mssql/server:2017-latest 
+
+  web-integration-test:
+    image: web-integration-test
+    build:
+      context: ../
+    depends_on:
+      - web-test-sql-server
+
+  web-unit-test:
+    image: web-unit-test
+    build:
+      context: ../

@@ -297,7 +297,8 @@ UserInterfaceState.xcuserstate
 ./config.xml
 
 
-config.json
+appsettings.override.json
+pwasettings.json
 src/Web/wwwroot/pwa/manifest.json
 src/Web/wwwroot/pwa/service-worker.js
 
