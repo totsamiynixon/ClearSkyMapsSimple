@@ -25,9 +25,9 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseUsers(user)
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             var model = new LoginModel
@@ -71,8 +71,8 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
 
             var currentData = dataSet[dataSetIndex];
             
-            using var server = GetDefaultTestServerBuilder()
-                .Build();
+            using var server = await GetDefaultTestServerBuilder()
+                .BuildAsync();
             var client = server.CreateClient();
 
             //Act
@@ -87,8 +87,8 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Login_and_response_not_found_status_code()
         {
             //Arrange
-            using var server = GetDefaultTestServerBuilder()
-                .Build();
+            using var server = await GetDefaultTestServerBuilder()
+                .BuildAsync();
             var client = server.CreateClient();
 
             var model = new LoginModel
@@ -112,9 +112,9 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseUsers(user)
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             var model = new LoginModel

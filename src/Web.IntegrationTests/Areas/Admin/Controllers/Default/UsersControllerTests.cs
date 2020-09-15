@@ -25,9 +25,9 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Get_get_all_users_and_response_ok_status_code_with_correct_content_type(string url)
         {
             //Arrange
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             //Act
@@ -43,9 +43,9 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Get_create_user_and_response_ok_status_code_with_correct_content_type()
         {
             //Arrange
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             //Act
@@ -61,9 +61,9 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Post_create_user_and_response_redirect_status_code()
         {
             //Arrange
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             var payloadDict = new Dictionary<string, string>
@@ -93,10 +93,10 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -124,10 +124,10 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             var payloadDict = new Dictionary<string, string>
@@ -160,10 +160,10 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -190,10 +190,10 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -220,10 +220,10 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             var query = HttpUtility.ParseQueryString(string.Empty);
@@ -250,10 +250,10 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             var payload = new Dictionary<string, string>

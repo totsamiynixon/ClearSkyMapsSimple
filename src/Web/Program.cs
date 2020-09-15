@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,7 @@ namespace Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var hostBuilder = CreateWebHostBuilder(args);
 
@@ -29,9 +30,9 @@ namespace Web
 
             var host = hostBuilder.Build();
 
-            InitializeApplication(host);
+            await InitializeApplicationAsync(host);
 
-            host.Run();
+            await host.RunAsync();
         }
 
         public static IWebHostBuilder
@@ -88,12 +89,12 @@ namespace Web
             ConfigureArea<TArea>(webHostBuilder);
         }
 
-        public static void InitializeApplication(IWebHost host)
+        public static async Task InitializeApplicationAsync(IWebHost host)
         {
             using (var scope = host.Services.CreateScope())
             {
                 var mediator = scope.ServiceProvider.GetService<IMediator>();
-                mediator.Send(new InitApplicationCommand()).Wait();
+                await mediator.Send(new InitApplicationCommand());
             }
         }
     }

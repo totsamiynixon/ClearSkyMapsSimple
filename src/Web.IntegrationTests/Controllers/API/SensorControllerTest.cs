@@ -21,8 +21,8 @@ namespace Web.IntegrationTests.Controllers.API
         {
             //Arrange
 
-            using var server = GetDefaultTestServerBuilder()
-                .Build();
+            using var server = await GetDefaultTestServerBuilder()
+                .BuildAsync();
             var client = server.CreateClient();
 
             //Act
@@ -52,9 +52,9 @@ namespace Web.IntegrationTests.Controllers.API
                 dataSet.OfType<StaticSensor>()
                     .Count(z => z.IsAvailable());
 
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseSensors(dataSet)
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             //Act

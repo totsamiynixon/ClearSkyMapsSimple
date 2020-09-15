@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
@@ -106,7 +107,7 @@ namespace Web.IntegrationTests
             return this;
         }
 
-        public TestServer Build()
+        public async Task<TestServer> BuildAsync()
         {
             var path = Assembly.GetAssembly(typeof(TestStartup))
                 ?.Location;
@@ -170,7 +171,7 @@ namespace Web.IntegrationTests
 
             var testServer = new TestServer(hostBuilder);
 
-            Program.InitializeApplication(testServer.Host);
+            await Program.InitializeApplicationAsync(testServer.Host);
 
             return testServer;
         }
@@ -195,7 +196,7 @@ public TestServerBuilder UseIdentityDatabaseSeeder(
 //TODO: check how it works when docker fully implemented
 /*.ConfigureAppConfiguration((context, configBuilder) =>
 {
-    var config = configBuilder.Build();
+    var config = configBuilder.BuildAsync();
     configBuilder.AddInMemoryCollection(
         new Dictionary<string, string>
         {

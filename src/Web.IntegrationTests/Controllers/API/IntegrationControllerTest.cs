@@ -47,9 +47,9 @@ namespace Web.IntegrationTests.Controllers.API
             };
             var currentSensor = dataSet[dataSetIndex];
             
-            using var server = GetDefaultTestServerBuilder()
+            using var server = await GetDefaultTestServerBuilder()
                 .UseSensors(currentSensor)
-                .Build();
+                .BuildAsync();
             var client = server.CreateClient();
 
             //Act
@@ -74,8 +74,8 @@ namespace Web.IntegrationTests.Controllers.API
 
             var dataQuery = new List<string> {apiKey, data}.Where(z => !string.IsNullOrEmpty(z)).ToArray();
             
-            using var server = GetDefaultTestServerBuilder()
-                .Build();
+            using var server = await GetDefaultTestServerBuilder()
+                .BuildAsync();
             var client = server.CreateClient();
 
             //Act
