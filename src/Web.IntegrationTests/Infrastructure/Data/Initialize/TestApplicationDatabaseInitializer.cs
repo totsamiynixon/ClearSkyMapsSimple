@@ -25,12 +25,11 @@ namespace Web.IntegrationTests.Infrastructure.Data.Initialize
                 using (var context = _dataContextFactory.Create())
                 {
                     context.Database.EnsureDeleted();
-                    /*context.Database.EnsureCreated();*/
                 }
             }
 
 
-            base.InitializeDbAsync().Wait();
+            await base.InitializeDbAsync();
         }
     }
 }
