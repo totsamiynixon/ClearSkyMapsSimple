@@ -117,18 +117,19 @@ namespace Web.IntegrationTests
                 {
                     var config = configBuilder.Build();
                     var connectionString = config.GetSection("Settings").GetValue<string>("ConnectionString");
+                    _testOutputHelper.WriteLine($"Connection String: {connectionString}");
                     var connectionStringInitialCatalogSegment =
                         connectionString.Split(";").First(z => z.Contains("Initial Catalog"));
-                    var connectionStringTransformedInitiaCatalogSegment =
+                    var connectionStringTransformedInitialCatalogSegment =
                         $"{connectionStringInitialCatalogSegment}.{_test.TestCase.TestMethod.Method.Name}";
-                    var transormedConntectionString = connectionString.Replace(
+                    var transformedConnectionString = connectionString.Replace(
                         connectionStringInitialCatalogSegment,
-                        connectionStringTransformedInitiaCatalogSegment);
+                        connectionStringTransformedInitialCatalogSegment);
                     
                     configBuilder.AddInMemoryCollection(
                         new Dictionary<string, string>
                         {
-                            ["Settings:ConnectionString"] = transormedConntectionString
+                            ["Settings:ConnectionString"] = transformedConnectionString
                         });
                 })
                 .ConfigureTestServices(services =>
