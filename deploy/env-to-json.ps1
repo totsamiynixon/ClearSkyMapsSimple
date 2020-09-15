@@ -11,7 +11,7 @@ try
 		    if(!$_.Key.StartsWith($prefix)) {
 			    return;
 			}
-			$key = $_.Key.Substring(0, $prefix.Length);
+			$key = $_.Key.TrimStart($prefix);
 			$key = $key.Replace("__", ":");
 		}
 		$jsonRequest[$key] = $_.Value;
