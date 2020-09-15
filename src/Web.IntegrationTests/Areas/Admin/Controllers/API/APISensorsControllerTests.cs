@@ -11,17 +11,22 @@ using Web.Helpers;
 using Web.IntegrationTests.Areas.Admin.Infrastructure;
 using Web.IntegrationTests.Infrastructure;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Web.IntegrationTests.Areas.Admin.Controllers.API
 {
-    [Collection("Integration: Sequential")]
+    // [Collection("Integration: Sequential")]
     public class APISensorsControllerTests : BaseScenario
     {
+        public APISensorsControllerTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        {
+        }
+
         [Fact]
         public async Task Get_get_all_sensors_and_response_ok_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -37,7 +42,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Create_static_sensor_and_response_ok_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -59,7 +64,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Create_static_sensor_and_response_bad_request_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -76,7 +81,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Create_portable_sensor_and_response_ok_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -97,7 +102,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Create_portable_sensor_and_response_bad_request_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -125,7 +130,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             };
             var currentSensor = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseSensors(currentSensor)
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
@@ -149,7 +154,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Delete_sensor_and_response_forbidden_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -168,7 +173,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Delete_sensor_and_response_bad_request_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -187,7 +192,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Delete_sensor_and_response_not_found_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -220,7 +225,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             };
             var currentSensor = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseSensors(currentSensor)
                 .UseDefaultAuth()
                 .Build();
@@ -242,7 +247,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Change_sensor_activation_and_response_bad_request_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -259,7 +264,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Change_sensor_activation_and_response_not_found_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -282,7 +287,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             //Arrange
             var currentSensor = Defaults.ActiveStaticSensor;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseSensors(currentSensor)
                 .UseDefaultAuth()
                 .Build();
@@ -305,7 +310,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Change_static_sensor_visibility_and_response_bad_request_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -322,7 +327,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Change_static_sensor_visibility_and_response_not_found_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();

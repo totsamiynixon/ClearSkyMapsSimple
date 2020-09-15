@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Web.Areas.Admin.Infrastructure.Auth;
 using Web.Areas.Admin.Infrastructure.Data;
@@ -17,116 +18,160 @@ using Web.IntegrationTests.Areas.Admin;
 using Web.IntegrationTests.Areas.Admin.Infrastructure;
 using Web.IntegrationTests.Areas.Admin.Infrastructure.Data.Initialize.Seed;
 using Web.IntegrationTests.Infrastructure.Data.Initialize.Seed;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace Web.IntegrationTests
 {
     public class BaseScenario
     {
-        public class TestServerBuilder
+        public ITest Test { get; }
+        public ITestOutputHelper TestOutputHelper { get; }
+
+        public BaseScenario(ITestOutputHelper testOutputHelper)
         {
-            //database
-            private readonly List<IDatabaseSeeder<DataContext>> _databaseSeeders;
-            private readonly List<IDatabaseSeeder<IdentityDataContext>> _identityDatabaseSeeders;
+            TestOutputHelper = testOutputHelper;
+            Test = (ITest) (testOutputHelper as TestOutputHelper)?.GetType()
+                .GetField("test", BindingFlags.NonPublic | BindingFlags.Instance)
+                ?.GetValue(testOutputHelper);
+        }
 
-            //authentication
-            private bool _useCustomAuth = false;
-            private User User { get; set; }
-            private List<string> Roles { get; set; }
+        public TestServerBuilder GetDefaultTestServerBuilder()
+        {
+            return new TestServerBuilder(TestOutputHelper, Test);
+        }
+    }
 
-            public TestServerBuilder()
-            {
-                _databaseSeeders = new List<IDatabaseSeeder<DataContext>>();
-                _identityDatabaseSeeders = new List<IDatabaseSeeder<IdentityDataContext>>();
-            }
 
-            public TestServerBuilder UseSensors(params Sensor[] sensors)
-            {
-                _databaseSeeders.Add(new TestSensorsDatabaseSeeder(sensors));
+    public class TestServerBuilder
+    {
+        //test context
+        protected readonly ITestOutputHelper _testOutputHelper;
+        protected readonly ITest _test;
 
-                return this;
-            }
+        //database
+        private readonly List<IDatabaseSeeder<DataContext>> _databaseSeeders;
+        private readonly List<IDatabaseSeeder<IdentityDataContext>> _identityDatabaseSeeders;
 
-            public TestServerBuilder UseUsers(params User[] users)
-            {
-                _identityDatabaseSeeders.Add(new TestIdentityDatabaseSeeder(users));
+        //authentication
+        private bool _useCustomAuth = false;
+        private User User { get; set; }
+        private List<string> Roles { get; set; }
 
-                return this;
-            }
+        public TestServerBuilder(ITestOutputHelper testOutputHelper, ITest test)
+        {
+            _testOutputHelper = testOutputHelper;
+            _test = test;
+            
+            _databaseSeeders = new List<IDatabaseSeeder<DataContext>>();
+            _identityDatabaseSeeders = new List<IDatabaseSeeder<IdentityDataContext>>();
+        }
 
-            public TestServerBuilder UseUsersWithRoles(params (User user, List<string> roles)[] usersWithRoles)
-            {
-                _identityDatabaseSeeders.Add(new TestIdentityDatabaseSeeder(usersWithRoles));
+        public TestServerBuilder UseSensors(params Sensor[] sensors)
+        {
+            _databaseSeeders.Add(new TestSensorsDatabaseSeeder(sensors));
 
-                return this;
-            }
+            return this;
+        }
 
-            public TestServerBuilder UseCustomAuth(User user, params string[] roles)
-            {
-                User = user;
-                Roles = roles.ToList();
-                _useCustomAuth = true;
+        public TestServerBuilder UseUsers(params User[] users)
+        {
+            _identityDatabaseSeeders.Add(new TestIdentityDatabaseSeeder(users));
 
-                return this;
-            }
+            return this;
+        }
 
-            public TestServerBuilder UseDefaultAuth()
-            {
-                User = AdminAreaDefaults.DefaultUser;
-                Roles = new List<string> {AuthSettings.Roles.Admin};
-                _useCustomAuth = true;
+        public TestServerBuilder UseUsersWithRoles(params (User user, List<string> roles)[] usersWithRoles)
+        {
+            _identityDatabaseSeeders.Add(new TestIdentityDatabaseSeeder(usersWithRoles));
 
-                return this;
-            }
+            return this;
+        }
 
-            public TestServer Build()
-            {
-                var path = Assembly.GetAssembly(typeof(TestStartup))
-                    ?.Location;
+        public TestServerBuilder UseCustomAuth(User user, params string[] roles)
+        {
+            User = user;
+            Roles = roles.ToList();
+            _useCustomAuth = true;
 
-                var hostBuilder = Program.CreateWebHostBuilder(Array.Empty<string>())
-                    .UseStartup<TestStartup>()
-                    .ConfigureTestServices(services =>
-                    {
-                        if (_databaseSeeders.Any())
+            return this;
+        }
+
+        public TestServerBuilder UseDefaultAuth()
+        {
+            User = AdminAreaDefaults.DefaultUser;
+            Roles = new List<string> {AuthSettings.Roles.Admin};
+            _useCustomAuth = true;
+
+            return this;
+        }
+
+        public TestServer Build()
+        {
+            var path = Assembly.GetAssembly(typeof(TestStartup))
+                ?.Location;
+
+            var hostBuilder = Program.CreateWebHostBuilder(Array.Empty<string>())
+                .UseStartup<TestStartup>()
+                .ConfigureAppConfiguration((context, configBuilder) =>
+                {
+                    var config = configBuilder.Build();
+                    var connectionString = config.GetSection("Settings").GetValue<string>("ConnectionString");
+                    var connectionStringInitialCatalogSegment =
+                        connectionString.Split(";").First(z => z.Contains("Initial Catalog"));
+                    var connectionStringTransformedInitiaCatalogSegment =
+                        $"{connectionStringInitialCatalogSegment}.{_test.TestCase.TestMethod.Method.Name}";
+                    var transormedConntectionString = connectionString.Replace(
+                        connectionStringInitialCatalogSegment,
+                        connectionStringTransformedInitiaCatalogSegment);
+                    
+                    configBuilder.AddInMemoryCollection(
+                        new Dictionary<string, string>
                         {
-                            foreach (var seeder in _databaseSeeders)
-                            {
-                                services.AddTransient<IDatabaseSeeder<DataContext>>(x => seeder);
-                            }
-                        }
-
-                        if (_identityDatabaseSeeders.Any())
-                        {
-                            foreach (var seeder in _identityDatabaseSeeders)
-                            {
-                                services.AddTransient<IDatabaseSeeder<IdentityDataContext>>(
-                                    x => seeder);
-                            }
-                        }
-                    })
-                    .ConfigureServices(services =>
-                    {
-                        services.Configure<TestAdminAreaOptions>(x =>
-                        {
-                            x.Auth = new TestAdminAreaAuthOptions
-                            {
-                                UseCustomAuth = _useCustomAuth,
-                                Roles = Roles,
-                                User = User
-                            };
+                            ["Settings:ConnectionString"] = transormedConntectionString
                         });
-                    })
-                    .UseContentRoot(Path.GetDirectoryName(path));
+                })
+                .ConfigureTestServices(services =>
+                {
+                    if (_databaseSeeders.Any())
+                    {
+                        foreach (var seeder in _databaseSeeders)
+                        {
+                            services.AddTransient<IDatabaseSeeder<DataContext>>(x => seeder);
+                        }
+                    }
 
-                Program.ConfigureAdminArea<TestAdminArea>(hostBuilder);
-                Program.ConfigurePWAArea<PWAArea>(hostBuilder);
+                    if (_identityDatabaseSeeders.Any())
+                    {
+                        foreach (var seeder in _identityDatabaseSeeders)
+                        {
+                            services.AddTransient<IDatabaseSeeder<IdentityDataContext>>(
+                                x => seeder);
+                        }
+                    }
+                })
+                .ConfigureServices(services =>
+                {
+                    services.Configure<TestAdminAreaOptions>(x =>
+                    {
+                        x.Auth = new TestAdminAreaAuthOptions
+                        {
+                            UseCustomAuth = _useCustomAuth,
+                            Roles = Roles,
+                            User = User
+                        };
+                    });
+                })
+                .UseContentRoot(Path.GetDirectoryName(path));
 
-                var testServer = new TestServer(hostBuilder);
+            Program.ConfigureAdminArea<TestAdminArea>(hostBuilder);
+            Program.ConfigurePWAArea<PWAArea>(hostBuilder);
 
-                Program.InitializeApplication(testServer.Host);
+            var testServer = new TestServer(hostBuilder);
 
-                return testServer;
-            }
+            Program.InitializeApplication(testServer.Host);
+
+            return testServer;
         }
     }
 }

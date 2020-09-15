@@ -10,17 +10,22 @@ using Web.Infrastructure.AntiForgery;
 using Web.IntegrationTests.Areas.Admin.Infrastructure;
 using Web.IntegrationTests.Infrastructure.AntiForgery;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
 {
-    [Collection("Integration: Sequential")]
+    // [Collection("Integration: Sequential")]
     public class AccountControllerTests : BaseScenario
     {
+        public AccountControllerTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        {
+        }
+
         [Fact]
         public async Task Get_login_and_response_ok_status_code_with_correct_content_type()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .Build();
             var client = server.CreateClient();
             var uriBuilder = new UriBuilder
@@ -44,7 +49,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
                 .Build();
             var client = server.CreateClient();
@@ -77,7 +82,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Get_logout_and_response_redirect_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .Build();
             var client = server.CreateClient();
 

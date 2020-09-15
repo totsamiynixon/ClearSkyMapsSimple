@@ -17,16 +17,12 @@ using Xunit.Abstractions;
 
 namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
 {
-    [Collection("Integration: Sequential")]
+    // [Collection("Integration: Sequential")]
     public class SensorsControllerTests : BaseScenario
     {
-        private readonly ITestOutputHelper _outputHelper;
-
-        public SensorsControllerTests(ITestOutputHelper outputHelper)
+        public SensorsControllerTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
         {
-            _outputHelper = outputHelper;
         }
-
 
         [Theory]
         [InlineData("admin")]
@@ -35,7 +31,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Get_get_all_sensors_and_response_ok_status_code_with_correct_content_type(string url)
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -53,7 +49,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Get_create_static_sensor_and_response_ok_status_code_with_correct_content_type()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -71,7 +67,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Post_create_static_sensor_and_response_ok_status_code_with_correct_content_type()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -89,7 +85,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Post_create_static_sensor_and_response_redirect_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -139,7 +135,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
 
             var currentDataSet = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -158,7 +154,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Post_create_portable_sensor_and_response_redirect_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .Build();
             var client = server.CreateClient();
@@ -193,7 +189,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
 
             var currentSensor = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseSensors(currentSensor)
                 .Build();
@@ -221,7 +217,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Get_delete_sensor_and_response_bad_request_status_code_with_correct_content_type()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -245,7 +241,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Get_delete_sensor_and_response_not_found_status_code_with_correct_content_type()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -283,7 +279,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
 
             var currentSensor = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseSensors(currentSensor)
                 .Build();
@@ -325,7 +321,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
 
             var currentSensor = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseSensors(currentSensor)
                 .Build();
@@ -369,7 +365,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
 
             var currentDataSet = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -396,7 +392,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Delete_sensor_and_response_not_found_status_code_with_correct_content_type()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -435,7 +431,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
 
             var currentSensor = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseSensors(currentSensor)
                 .Build();
@@ -474,7 +470,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
 
             var currentSensor = dataSet[dataSetIndex];
             
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .UseSensors(currentSensor)
                 .Build();
@@ -512,7 +508,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
 
             var currentSensor = dataSet[dataSetIndex];
             
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .UseSensors(currentSensor)
                 .Build();
@@ -537,7 +533,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var sensor = Defaults.StaticSensor;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .UseSensors(sensor)
                 .Build();
@@ -567,7 +563,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var sensor = Defaults.StaticSensor;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseDefaultAuth()
                 .UseSensors(sensor)
                 .Build();

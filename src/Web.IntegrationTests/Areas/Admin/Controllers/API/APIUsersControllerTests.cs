@@ -8,17 +8,22 @@ using Web.Areas.Admin.Infrastructure.Auth;
 using Web.Areas.Admin.Models.API.Users;
 using Web.IntegrationTests.Areas.Admin.Infrastructure;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Web.IntegrationTests.Areas.Admin.Controllers.API
 {
-    [Collection("Integration: Sequential")]
+    // [Collection("Integration: Sequential")]
     public class APIUsersControllerTests : BaseScenario
     {
+        public APIUsersControllerTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        {
+        }
+
         [Fact]
         public async Task Get_all_users_and_response_ok_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -34,7 +39,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Create_user_and_response_ok_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -90,7 +95,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
 
             var currentData = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -110,7 +115,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             var user = AdminAreaDefaults.DefaultUser;
             var email = user.Email;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseUsers(user)
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
@@ -136,7 +141,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Create_user_and_response_conflict_status_code_when_unable_to_create_user()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -163,7 +168,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseUsers(user)
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
@@ -212,7 +217,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
 
             var currentData = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -229,7 +234,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Change_user_password_and_response_not_found_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -256,7 +261,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Supervisor}))
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
@@ -285,7 +290,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseUsers(user)
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
@@ -321,7 +326,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
 
             var currentData = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -340,7 +345,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Delete_user_and_response_not_found_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -364,7 +369,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Supervisor}))
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
@@ -391,7 +396,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseUsers(user)
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
@@ -424,7 +429,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
 
             var currentData = dataSet[dataSetIndex];
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -441,7 +446,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Change_user_activation_state_and_response_not_found_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -463,7 +468,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Supervisor}))
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();

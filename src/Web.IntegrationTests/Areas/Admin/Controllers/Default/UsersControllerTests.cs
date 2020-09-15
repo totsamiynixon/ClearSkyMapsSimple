@@ -8,19 +8,24 @@ using Web.Areas.Admin.Infrastructure.Auth;
 using Web.Areas.Admin.Models.Default.Users;
 using Web.IntegrationTests.Areas.Admin.Infrastructure;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
 {
-    [Collection("Integration: Sequential")]
+    // [Collection("Integration: Sequential")]
     public class UsersControllerTests : BaseScenario
     {
+        public UsersControllerTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        {
+        }
+
         [Theory]
         [InlineData("admin/users")]
         [InlineData("admin/users/index")]
         public async Task Get_get_all_users_and_response_ok_status_code_with_correct_content_type(string url)
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -38,7 +43,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Get_create_user_and_response_ok_status_code_with_correct_content_type()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -56,7 +61,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
         public async Task Post_create_user_and_response_redirect_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .Build();
             var client = server.CreateClient();
@@ -88,7 +93,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
                 .Build();
@@ -119,7 +124,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
                 .Build();
@@ -155,7 +160,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
                 .Build();
@@ -185,7 +190,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
                 .Build();
@@ -215,7 +220,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
                 .Build();
@@ -245,7 +250,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseCustomAuth(AdminAreaDefaults.DefaultUser, AuthSettings.Roles.Supervisor)
                 .UseUsersWithRoles((user, new List<string> {AuthSettings.Roles.Admin}))
                 .Build();

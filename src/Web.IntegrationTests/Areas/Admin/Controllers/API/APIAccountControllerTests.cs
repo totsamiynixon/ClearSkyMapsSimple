@@ -8,19 +8,24 @@ using Newtonsoft.Json;
 using Web.Areas.Admin.Models.API.Account;
 using Web.IntegrationTests.Areas.Admin.Infrastructure;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Web.IntegrationTests.Areas.Admin.Controllers.API
 {
-    [Collection("Integration: Sequential")]
+    // [Collection("Integration: Sequential")]
     public class APIAccountControllerTests : BaseScenario
     {
+        public APIAccountControllerTests(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        {
+        }
+
         [Fact]
         public async Task Login_and_response_ok_status_code()
         {
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseUsers(user)
                 .Build();
             var client = server.CreateClient();
@@ -66,7 +71,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
 
             var currentData = dataSet[dataSetIndex];
             
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .Build();
             var client = server.CreateClient();
 
@@ -82,7 +87,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
         public async Task Login_and_response_not_found_status_code()
         {
             //Arrange
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .Build();
             var client = server.CreateClient();
 
@@ -107,7 +112,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             //Arrange
             var user = AdminAreaDefaults.DefaultUser;
 
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseUsers(user)
                 .Build();
             var client = server.CreateClient();

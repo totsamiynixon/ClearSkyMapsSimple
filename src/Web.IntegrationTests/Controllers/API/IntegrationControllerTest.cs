@@ -7,12 +7,18 @@ using System.Threading.Tasks;
 using Web.Domain.Entities;
 using Web.Helpers;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Web.IntegrationTests.Controllers.API
 {
-    [Collection("Integration: Sequential")]
+    // [Collection("Integration: Sequential")]
     public class IntegrationControllerTest : BaseScenario
     {
+        public IntegrationControllerTest(ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        {
+        }
+
+        [Trait("Category","Smoke")]
         [Theory]
         [InlineData(0)]
         [InlineData(1)]
@@ -41,7 +47,7 @@ namespace Web.IntegrationTests.Controllers.API
             };
             var currentSensor = dataSet[dataSetIndex];
             
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .UseSensors(currentSensor)
                 .Build();
             var client = server.CreateClient();
@@ -55,6 +61,7 @@ namespace Web.IntegrationTests.Controllers.API
             response.EnsureSuccessStatusCode();
         }
 
+        [Trait("Category","Smoke")]
         [Theory]
         [InlineData(null, null)]
         [InlineData(null, "123")]
@@ -67,7 +74,7 @@ namespace Web.IntegrationTests.Controllers.API
 
             var dataQuery = new List<string> {apiKey, data}.Where(z => !string.IsNullOrEmpty(z)).ToArray();
             
-            using var server = new TestServerBuilder()
+            using var server = GetDefaultTestServerBuilder()
                 .Build();
             var client = server.CreateClient();
 
