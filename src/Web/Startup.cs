@@ -129,26 +129,6 @@ namespace Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
-            /*var defaultDateCulture = "en-US";
-            var ci = new CultureInfo(defaultDateCulture);
-            ci.NumberFormat.D
-            ci.NumberFormat.NumberDecimalSeparator = ".";
-            ci.NumberFormat.CurrencyDecimalSeparator = ".";
-            CultureInfo.DefaultThreadCurrentCulture = ci;
-            CultureInfo.DefaultThreadCurrentUICulture = ci;
-            app.UseRequestLocalization(new RequestLocalizationOptions
-            {
-                DefaultRequestCulture = new RequestCulture(ci),
-                SupportedCultures = new List<CultureInfo>
-                {
-                    ci,
-                },
-                SupportedUICultures = new List<CultureInfo>
-                {
-                    ci,
-                }
-            });*/
-            
             ConfigureArea(app);
 
             app.UseSwagger();

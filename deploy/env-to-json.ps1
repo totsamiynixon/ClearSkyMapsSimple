@@ -12,6 +12,7 @@ try
 			    return;
 			}
 			$key = $_.Key.Substring(0, $prefix.Length);
+			$key = $key.Replace("__", ":");
 		}
 		$jsonRequest[$key] = $_.Value;
 	}
