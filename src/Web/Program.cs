@@ -40,7 +40,6 @@ namespace Web
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, builder) =>
                 {
-                    var env = context.HostingEnvironment;
                     builder
                         .AddJsonFile("appsettings.json", false, true)
                         .AddJsonFile($"appsettings.override.json", true, true);
