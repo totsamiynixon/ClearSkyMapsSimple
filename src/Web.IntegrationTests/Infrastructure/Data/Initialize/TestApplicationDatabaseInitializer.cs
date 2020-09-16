@@ -9,8 +9,6 @@ namespace Web.IntegrationTests.Infrastructure.Data.Initialize
 {
     public class TestApplicationDatabaseInitializer : DefaultApplicationDatabaseInitializer
     {
-        private static readonly object Lock = new object();
-
         public TestApplicationDatabaseInitializer(IDataContextFactory<DataContext> dataContextFactory,
             IEnumerable<IDatabaseSeeder<DataContext>> databaseSeeders) :
             base(dataContextFactory, databaseSeeders)
@@ -20,14 +18,10 @@ namespace Web.IntegrationTests.Infrastructure.Data.Initialize
         public override async Task InitializeDbAsync()
         {
             //TODO: изучить, как запускаются тесты и как правильно инициализировать базу
-            lock (Lock)
+            await using (var context = _dataContextFactory.Create())
             {
-                using (var context = _dataContextFactory.Create())
-                {
-                    context.Database.EnsureDeleted();
-                }
+                await context.Database.EnsureDeletedAsync();
             }
-
 
             await base.InitializeDbAsync();
         }
