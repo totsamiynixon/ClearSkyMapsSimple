@@ -1,4 +1,4 @@
-# Clear Sky MapsSimple
+# Clear Sky Maps Simple
 
 ## Status
 
