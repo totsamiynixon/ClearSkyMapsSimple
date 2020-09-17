@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -12,13 +13,13 @@ namespace Web.Areas.Admin.Application.Emulation.Notifications
 {
     public class EmulationStartedNotificationHandler : INotificationHandler<EmulationStartedNotification>
     {
-        private readonly IApplicationDatabaseInitializer _applicationDatabaseInitializer;
+        private readonly IEnumerable<IApplicationDatabaseInitializer> _applicationDatabaseInitializers;
         private readonly IDataContextFactory<DataContext> _dataContextFactory;
         private readonly ISensorCacheHelper _sensorCacheHelper;
 
-        public EmulationStartedNotificationHandler(IApplicationDatabaseInitializer applicationDatabaseInitializer, IDataContextFactory<DataContext> dataContextFactory, ISensorCacheHelper sensorCacheHelper)
+        public EmulationStartedNotificationHandler(IEnumerable<IApplicationDatabaseInitializer> applicationDatabaseInitializers, IDataContextFactory<DataContext> dataContextFactory, ISensorCacheHelper sensorCacheHelper)
         {
-            _applicationDatabaseInitializer = applicationDatabaseInitializer ?? throw new ArgumentNullException(nameof(applicationDatabaseInitializer));
+            _applicationDatabaseInitializers = applicationDatabaseInitializers ?? throw new ArgumentNullException(nameof(applicationDatabaseInitializers));
             _dataContextFactory = dataContextFactory ?? throw new ArgumentNullException(nameof(dataContextFactory));
             _sensorCacheHelper = sensorCacheHelper ?? throw new ArgumentNullException(nameof(sensorCacheHelper));
         }
@@ -27,8 +28,11 @@ namespace Web.Areas.Admin.Application.Emulation.Notifications
         public async Task Handle(EmulationStartedNotification notification, CancellationToken cancellationToken)
         {
             _sensorCacheHelper.ClearCache();
-            await _applicationDatabaseInitializer.InitializeDbAsync();
-            
+            foreach (var initializer in _applicationDatabaseInitializers)
+            {
+                await initializer.InitializeDbAsync();
+            }
+
             await using var context = _dataContextFactory.Create();
             context.Sensors.RemoveRange(context.Sensors);
             await context.SaveChangesAsync(cancellationToken);
