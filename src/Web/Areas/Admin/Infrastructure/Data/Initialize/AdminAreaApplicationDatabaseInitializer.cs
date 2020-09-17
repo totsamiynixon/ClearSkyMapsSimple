@@ -29,13 +29,13 @@ namespace Web.Areas.Admin.Infrastructure.Data.Initialize
 
         public virtual async Task InitializeDbAsync()
         {
-            lock (Lock)
-            {
+            /*lock (Lock)
+            {*/
                 using (var context = _identityDataContextFactory.Create())
                 {
                     try
                     {
-                        context.Database.Migrate();
+                        await context.Database.MigrateAsync();
                         foreach (var seeder in _identityDatabaseSeeders)
                         {
                             seeder.SeedAsync(context).Wait();
@@ -46,7 +46,7 @@ namespace Web.Areas.Admin.Infrastructure.Data.Initialize
                         // retry
                     }
                 }
-            }
+            /*}*/
         }
     }
 }

@@ -25,13 +25,13 @@ namespace Web.Infrastructure.Data.Initialize
 
         public virtual async Task InitializeDbAsync()
         {
-            lock (Lock)
-            {
+            /*lock (Lock)
+            {*/
                 using (var context = _dataContextFactory.Create())
                 {
                     try
                     {
-                        context.Database.Migrate();
+                        await context.Database.MigrateAsync();
                         foreach (var seeder in _databaseSeeders)
                         {
                             seeder.SeedAsync(context).Wait();
@@ -42,7 +42,7 @@ namespace Web.Infrastructure.Data.Initialize
                         // retry
                     }
                 }
-            }
+            /*}*/
         }
     }
 }
