@@ -23,7 +23,7 @@ services:
       - APP_Admin__JWT__SecretKey=${APP_Admin__JWT__SecretKey}
       - APP_Admin__JWT__Issuer=${APP_Admin__JWT__Issuer}
       - APP_Admin__JWT__Audience=${APP_Admin__JWT__Audience}
-      - APPPWA_Yandex__MapsJavaScriptAPIKey=${APPPWA_Yandex__MapsJavaScriptAPIKey}
+      - APP_PWA_Yandex__MapsJavaScriptAPIKey=${APP_PWA_Yandex__MapsJavaScriptAPIKey}
     build:
       dockerfile: ./deploy/docker/Web.Dockerfile
       args:
