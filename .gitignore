@@ -301,5 +301,6 @@ appsettings.override.json
 pwasettings.json
 src/Web/wwwroot/pwa/manifest.json
 src/Web/wwwroot/pwa/service-worker.js
-
-##some random comment
+deploy/docker/docker-compose.dev.override.env
+tests-results/
+[Tt]est[Rr]esults/
