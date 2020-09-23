@@ -1,7 +1,6 @@
 version: '3.4'
 
 services:
-
   web-test-sql-server:
     environment:
       - SA_PASSWORD=Pass@word
@@ -9,33 +8,33 @@ services:
     ports:
       - "6433:1433"
 
-  web-integration-test:
-    build:
-      dockerfile: Web.Dockerfile
-      target: integration-tests
+  web-integration-tests:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - APP__Settings__ConnectionString=web-test-sql-server;Initial Catalog=CSM.Tests.Dev.Tests.{Id};User ID=sa;Password=Pass@word;
-      - APP__Settings__ServerUrl=https://localhost
-      - APP__Admin__JWT__Issuer=https://localhost
-      - APP__Admin__JWT__Audience=https://localhost
+      - APP_Settings__ConnectionString=Server=web-test-sql-server;Initial Catalog=CSM.Dev.Tests;User ID=sa;Password=Pass@word;
+      - APP_Admin__JWT__Issuer=https://localhost
+      - APP_Admin__JWT__Audience=https://localhost
     ports:
       - "5080:80"
       - "5433:433"
-    entrypoint:
-        - dotnet
-        - test
-        - --logger
-        - trx;
-        - 
-  web-unit-test:
-    build:
-      dockerfile: Web.Dockerfile
-      target: unit-tests
+    entrypoint: dotnet test -p:ParallelizeTestCollections=false --filter=Category!=Smoke --logger trx;LogFileName=/tests/web-integration-tests-result.xml
+
+  web-smoke-tests:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - APP_Settings__ConnectionString=Server=web-test-sql-server;Initial Catalog=CSM.Dev.Tests;User ID=sa;Password=Pass@word;
+      - APP_Admin__JWT__Issuer=https://localhost
+      - APP_Admin__JWT__Audience=https://localhost
+    ports:
+      - "5080:80"
+      - "5433:433"
+    entrypoint: dotnet test -p:ParallelizeTestCollections=false --filter=Category=Smoke --logger trx;LogFileName=/tests/web-smoke-tests-result.xml
+      
+  web-unit-tests:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     entrypoint:
       - dotnet
       - test
       - --logger
-      - trx;
+      - trx;LogFileName=/tests/web-unit-tests-result.xml

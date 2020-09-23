@@ -4,14 +4,33 @@ services:
   web-test-sql-server:
     image: mcr.microsoft.com/mssql/server:2017-latest 
 
-  web-integration-test:
-    image: web-integration-test
+  web-integration-tests:
+    image: web-integration-tests
     build:
-      context: ../
+      context: ../../
+      dockerfile: ./deploy/docker/Web.Dockerfile
+      target: integration-tests
     depends_on:
       - web-test-sql-server
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
 
-  web-unit-test:
-    image: web-unit-test
+  web-smoke-tests:
+    image: web-smoke-tests
     build:
-      context: ../
+      context: ../../
+      dockerfile: ./deploy/docker/Web.Dockerfile
+      target: integration-tests
+    depends_on:
+      - web-test-sql-server
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+
+  web-unit-tests:
+    image: web-unit-tests
+    build:
+      context: ../../
+      dockerfile: ./deploy/docker/Web.Dockerfile
+      target: unit-tests
+    volumes:
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests 

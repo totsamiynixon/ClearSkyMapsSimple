@@ -12,19 +12,24 @@ services:
   web:
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - APP__Settings__ConnectionString=${APP__Settings__ConnectionString}
-      - APP__FirebaseCloudMessaging__ServerKey=${APP__FirebaseCloudMessaging__ServerKey}
-      - APP__FirebaseCloudMessaging__MessagingSenderId=${APP__FirebaseCloudMessaging__MessagingSenderId}
-      - APP__Settings__Version=${APP__Settings__Version}
-      - APP__Settings__ServerUrl=${APP__Settings__ServerUrl}
-      - APP__Emulation__ConnectionString=${APP__Emulation__ConnectionString}
-      - APP__Emulation__Enabled=${APP__Emulation__Enabled}
-      - APP__Admin__JWT__SecretKey=${APP__Admin__JWT__SecretKey}
-      - APP__Admin__JWT__Issuer=${APP__Admin__JWT__Issuer}
-      - APP__Admin__JWT__Audience=${APP__Admin__JWT__Audience}
-      - APP__PWA__Yandex__MapsJavaScriptAPIKey=${APP__PWA__Yandex__MapsJavaScriptAPIKey}
+      - APP_Settings__Version=${APP_Settings__Version}
+      - APP_Settings__ConnectionString=${APP_Settings__ConnectionString}
+      - APP_FirebaseCloudMessaging__ServerKey=${APP_FirebaseCloudMessaging__ServerKey}
+      - APP_FirebaseCloudMessaging__MessagingSenderId=${APP_FirebaseCloudMessaging__MessagingSenderId}
+      - APP_Settings__Version=${APP_Settings__Version}
+      - APP_Settings__ServerUrl=${APP_Settings__ServerUrl}
+      - APP_Emulation__ConnectionString=${APP_Emulation__ConnectionString}
+      - APP_Emulation__Enabled=${APP_Emulation__Enabled}
+      - APP_Admin__JWT__SecretKey=${APP_Admin__JWT__SecretKey}
+      - APP_Admin__JWT__Issuer=${APP_Admin__JWT__Issuer}
+      - APP_Admin__JWT__Audience=${APP_Admin__JWT__Audience}
+      - APPPWA_Yandex__MapsJavaScriptAPIKey=${APPPWA_Yandex__MapsJavaScriptAPIKey}
     build:
-      dockerfile: Web.Dockerfile
+      dockerfile: ./deploy/docker/Web.Dockerfile
+      args:
+        - APPPWA_FirebaseCloudMessaging__MessagingSenderId=${APP_FirebaseCloudMessaging__MessagingSenderId}
+        - APPPWA_Application__Version=${APP_Settings__Version}
+        - APPPWA_Application__Environment=${ASPNETCORE_ENVIRONMENT}
     ports:
       - "5080:80"
       - "5433:433"

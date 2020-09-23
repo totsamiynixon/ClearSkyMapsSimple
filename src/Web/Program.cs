@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -40,10 +41,12 @@ namespace Web
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((context, builder) =>
                 {
+                    builder.Sources.Clear();
                     builder
-                        .AddJsonFile("appsettings.json", false, true)
-                        .AddJsonFile($"appsettings.override.json", true, true);
-                    builder.AddEnvironmentVariables("APP__");
+                        .AddJsonFile("appsettings.json", false, false)
+                        .AddJsonFile($"appsettings.override.json", true, false)
+                        .AddEnvironmentVariables("APP_");
+
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
@@ -76,8 +79,7 @@ namespace Web
         {
             webHostBuilder.ConfigureServices(services => { services.AddSingleton(typeof(IArea), typeof(TArea)); });
         }
-
-
+        
         public static void ConfigureAdminArea<TArea>(IWebHostBuilder webHostBuilder) where TArea : AdminArea
         {
             ConfigureArea<TArea>(webHostBuilder);
