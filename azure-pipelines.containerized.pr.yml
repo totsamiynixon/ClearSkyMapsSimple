@@ -1,0 +1,27 @@
+pr:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    dockerComposeFile: './deploy/docker/docker-compose.yml'
+    additionalDockerComposeFiles: './deploy/docker/docker-compose.override.yml'
+    action: 'Build services'
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    dockerComposeFile: './deploy/docker/docker-compose.tests.yml'
+    additionalDockerComposeFiles: './deploy/docker/docker-compose.tests.override.yml'
+    action: 'Run a specific service'
+    serviceName: 'web-unit-tests'
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Azure Container Registry'
+    dockerComposeFile: './deploy/docker/docker-compose.tests.yml'
+    additionalDockerComposeFiles: './deploy/docker/docker-compose.tests.override.yml'
+    action: 'Run a specific service'
+    serviceName: 'web-integration-tests'
