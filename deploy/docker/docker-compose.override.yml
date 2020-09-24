@@ -14,9 +14,8 @@ services:
       - ASPNETCORE_ENVIRONMENT
       - APP_Settings__Version
       - APP_Settings__ConnectionString
-      - APP_FirebaseCloudMessaging__ServerKey
-      - APP_FirebaseCloudMessaging__MessagingSenderId
-      - APP_Settings__Version
+      - APP_Settings__FirebaseCloudMessaging__ServerKey
+      - APP_Settings__FirebaseCloudMessaging__MessagingSenderId
       - APP_Settings__ServerUrl
       - APP_Emulation__ConnectionString
       - APP_Emulation__Enabled
@@ -27,7 +26,7 @@ services:
     build:
       dockerfile: ./deploy/docker/Web.Dockerfile
       args:
-        - APPPWA_FirebaseCloudMessaging__MessagingSenderId=${APP_FirebaseCloudMessaging__MessagingSenderId}
+        - APPPWA_FirebaseCloudMessaging__MessagingSenderId=${APP_Settings__FirebaseCloudMessaging__MessagingSenderId}
         - APPPWA_Application__Version=${APP_Settings__Version}
         - APPPWA_Application__Environment=${ASPNETCORE_ENVIRONMENT}
     ports:
