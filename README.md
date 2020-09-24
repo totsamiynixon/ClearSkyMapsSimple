@@ -18,7 +18,8 @@ There are two processes to work with this application:
 ## Setup
 
 ### Tools (Basic Process)
-Please, install .Net PowerShell tool, it's required for build in Basic process. Use  `dotnet tool install --global PowerShell`.
+Please, install .Net PowerShell tool, it's required for build in Basic process.
+Use  `dotnet tool install --global PowerShell`.
 For more information, please, read [here](https://devblogs.microsoft.com/powershell/introducing-powershell-as-net-global-tool)
 
 
