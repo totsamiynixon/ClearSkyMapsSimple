@@ -11,19 +11,19 @@ services:
 
   web:
     environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - APP_Settings__Version=${APP_Settings__Version}
-      - APP_Settings__ConnectionString=${APP_Settings__ConnectionString}
-      - APP_FirebaseCloudMessaging__ServerKey=${APP_FirebaseCloudMessaging__ServerKey}
-      - APP_FirebaseCloudMessaging__MessagingSenderId=${APP_FirebaseCloudMessaging__MessagingSenderId}
-      - APP_Settings__Version=${APP_Settings__Version}
-      - APP_Settings__ServerUrl=${APP_Settings__ServerUrl}
-      - APP_Emulation__ConnectionString=${APP_Emulation__ConnectionString}
-      - APP_Emulation__Enabled=${APP_Emulation__Enabled}
-      - APP_Admin__JWT__SecretKey=${APP_Admin__JWT__SecretKey}
-      - APP_Admin__JWT__Issuer=${APP_Admin__JWT__Issuer}
-      - APP_Admin__JWT__Audience=${APP_Admin__JWT__Audience}
-      - APP_PWA_Yandex__MapsJavaScriptAPIKey=${APP_PWA_Yandex__MapsJavaScriptAPIKey}
+      - ASPNETCORE_ENVIRONMENT
+      - APP_Settings__Version
+      - APP_Settings__ConnectionString
+      - APP_FirebaseCloudMessaging__ServerKey
+      - APP_FirebaseCloudMessaging__MessagingSenderId
+      - APP_Settings__Version
+      - APP_Settings__ServerUrl
+      - APP_Emulation__ConnectionString
+      - APP_Emulation__Enabled
+      - APP_Admin__JWT__SecretKey
+      - APP_Admin__JWT__Issuer
+      - APP_Admin__JWT__Audience
+      - APP_PWA_Yandex__MapsJavaScriptAPIKey
     build:
       dockerfile: ./deploy/docker/Web.Dockerfile
       args:
