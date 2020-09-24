@@ -16,6 +16,10 @@ try
 		}
 		$jsonRequest[$key] = $_.Value;
 	}
+	
+	Write-Host "Generated result: " -ForegroundColor Yellow
+	Write-Host ($obj | Format-Table | Out-String) -ForegroundColor Yellow
+	
     $jsonRequest | ConvertTo-Json -depth 100 | Out-File $outputPath;
 }
 catch
