@@ -34,7 +34,7 @@ namespace Web.Infrastructure.Data.Initialize
                         await context.Database.MigrateAsync();
                         foreach (var seeder in _databaseSeeders)
                         {
-                            seeder.SeedAsync(context).Wait();
+                            await seeder.SeedAsync(context);
                         }
                     }
                     catch (SqlException exception) when (exception.Number == 1801)

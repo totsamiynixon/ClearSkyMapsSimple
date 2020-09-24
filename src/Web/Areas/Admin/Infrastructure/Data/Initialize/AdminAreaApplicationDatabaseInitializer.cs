@@ -31,21 +31,22 @@ namespace Web.Areas.Admin.Infrastructure.Data.Initialize
         {
             /*lock (Lock)
             {*/
-                using (var context = _identityDataContextFactory.Create())
+            using (var context = _identityDataContextFactory.Create())
+            {
+                try
                 {
-                    try
+                    await context.Database.MigrateAsync();
+                    foreach (var seeder in _identityDatabaseSeeders)
                     {
-                        await context.Database.MigrateAsync();
-                        foreach (var seeder in _identityDatabaseSeeders)
-                        {
-                            seeder.SeedAsync(context).Wait();
-                        }
-                    }
-                    catch (SqlException exception) when (exception.Number == 1801)
-                    {
-                        // retry
+                        await seeder.SeedAsync(context);
                     }
                 }
+                catch (SqlException exception) when (exception.Number == 1801)
+                {
+                    // retry
+                }
+            }
+
             /*}*/
         }
     }
