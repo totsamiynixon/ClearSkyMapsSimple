@@ -11,23 +11,23 @@ services:
 
   web:
     environment:
-      - ASPNETCORE_ENVIRONMENT
-      - APP_Settings__Version
-      - APP_Settings__ConnectionString
-      - APP_Settings__FirebaseCloudMessaging__ServerKey
-      - APP_Settings__FirebaseCloudMessaging__MessagingSenderId
-      - APP_Settings__ServerUrl
-      - APP_Emulation__ConnectionString
-      - APP_Emulation__Enabled
-      - APP_Admin__JWT__SecretKey
-      - APP_Admin__JWT__Issuer
-      - APP_Admin__JWT__Audience
-      - APP_PWA_Yandex__MapsJavaScriptAPIKey
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - APP_Settings__Version=${CSM_APP_SETTINGS__VERSION}
+      - APP_Settings__ConnectionString=${CSM_APP_SETTINGS__CONNECTIONSTRING}
+      - APP_Settings__FirebaseCloudMessaging__ServerKey=${CSM_APP_SETTINGS__FIREBASECLOUDMESSAGING__SERVERKEY}
+      - APP_Settings__FirebaseCloudMessaging__MessagingSenderId=${CSM_APP_SETTINGS__FIREBASECLOUDMESSAGING__MESSAGINGSENDERID}
+      - APP_Settings__ServerUrl=${CSM_APP_SETTINGS__SERVERURL}
+      - APP_Emulation__ConnectionString=${CSM_APP_EMULATION__CONNECTIONSTRING}
+      - APP_Emulation__Enabled=${CSM_APP_EMULATION__ENABLED}
+      - APP_Admin__JWT__SecretKey=${CSM_APP_ADMIN__JWT__SECRETKEY}
+      - APP_Admin__JWT__Issuer=${CSM_APP_ADMIN__JWT__ISSUER}
+      - APP_Admin__JWT__Audience=${CSM_APP_ADMIN__JWT__AUDIENCE}
+      - APP_PWA_Yandex__MapsJavaScriptAPIKey=${CSM_APP_PWA_YANDEX__MAPSJAVASCRIPTAPIKEY}
     build:
       dockerfile: ./deploy/docker/Web.Dockerfile
       args:
-        - APPPWA_FirebaseCloudMessaging__MessagingSenderId=${APP_Settings__FirebaseCloudMessaging__MessagingSenderId}
-        - APPPWA_Application__Version=${APP_Settings__Version}
+        - APPPWA_FirebaseCloudMessaging__MessagingSenderId=${CSM_APP_SETTINGS__FIREBASECLOUDMESSAGING__MESSAGINGSENDERID}
+        - APPPWA_Application__Version=${CSM_APP_SETTINGS__VERSION}
         - APPPWA_Application__Environment=${ASPNETCORE_ENVIRONMENT}
     ports:
       - "5080:80"
