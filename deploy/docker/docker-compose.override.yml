@@ -12,19 +12,23 @@ services:
   web:
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - APP__Settings__ConnectionString=${APP__Settings__ConnectionString}
-      - APP__FirebaseCloudMessaging__ServerKey=${APP__FirebaseCloudMessaging__ServerKey}
-      - APP__FirebaseCloudMessaging__MessagingSenderId=${APP__FirebaseCloudMessaging__MessagingSenderId}
-      - APP__Settings__Version=${APP__Settings__Version}
-      - APP__Settings__ServerUrl=${APP__Settings__ServerUrl}
-      - APP__Emulation__ConnectionString=${APP__Emulation__ConnectionString}
-      - APP__Emulation__Enabled=${APP__Emulation__Enabled}
-      - APP__Admin__JWT__SecretKey=${APP__Admin__JWT__SecretKey}
-      - APP__Admin__JWT__Issuer=${APP__Admin__JWT__Issuer}
-      - APP__Admin__JWT__Audience=${APP__Admin__JWT__Audience}
-      - APP__PWA__Yandex__MapsJavaScriptAPIKey=${APP__PWA__Yandex__MapsJavaScriptAPIKey}
+      - APP_Settings__Version=${CSM_APP_SETTINGS__VERSION}
+      - APP_Settings__ConnectionString=${CSM_APP_SETTINGS__CONNECTIONSTRING}
+      - APP_Settings__FirebaseCloudMessaging__ServerKey=${CSM_APP_SETTINGS__FIREBASECLOUDMESSAGING__SERVERKEY}
+      - APP_Settings__FirebaseCloudMessaging__MessagingSenderId=${CSM_APP_SETTINGS__FIREBASECLOUDMESSAGING__MESSAGINGSENDERID}
+      - APP_Settings__ServerUrl=${CSM_APP_SETTINGS__SERVERURL}
+      - APP_Emulation__ConnectionString=${CSM_APP_EMULATION__CONNECTIONSTRING}
+      - APP_Emulation__Enabled=${CSM_APP_EMULATION__ENABLED}
+      - APP_Admin__JWT__SecretKey=${CSM_APP_ADMIN__JWT__SECRETKEY}
+      - APP_Admin__JWT__Issuer=${CSM_APP_ADMIN__JWT__ISSUER}
+      - APP_Admin__JWT__Audience=${CSM_APP_ADMIN__JWT__AUDIENCE}
+      - APP_PWA_Yandex__MapsJavaScriptAPIKey=${CSM_APP_PWA_YANDEX__MAPSJAVASCRIPTAPIKEY}
     build:
-      dockerfile: Web.Dockerfile
+      dockerfile: ./deploy/docker/Web.Dockerfile
+      args:
+        - APPPWA_FirebaseCloudMessaging__MessagingSenderId=${CSM_APP_SETTINGS__FIREBASECLOUDMESSAGING__MESSAGINGSENDERID}
+        - APPPWA_Application__Version=${CSM_APP_SETTINGS__VERSION}
+        - APPPWA_Application__Environment=${ASPNETCORE_ENVIRONMENT}
     ports:
       - "5080:80"
       - "5433:433"

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -63,7 +64,7 @@ namespace Web.IntegrationTests
         {
             _testOutputHelper = testOutputHelper;
             _test = test;
-            
+
             _databaseSeeders = new List<IDatabaseSeeder<DataContext>>();
             _identityDatabaseSeeders = new List<IDatabaseSeeder<IdentityDataContext>>();
         }
@@ -118,7 +119,7 @@ namespace Web.IntegrationTests
                 {
                     var config = configBuilder.Build();
                     var connectionString = config.GetSection("Settings").GetValue<string>("ConnectionString");
-                    _testOutputHelper.WriteLine($"Connection String: {connectionString}");
+                    _testOutputHelper.WriteLine($"Configuration: {Environment.NewLine}{config.GetDebugView()}");
                     var connectionStringInitialCatalogSegment =
                         connectionString.Split(";").First(z => z.Contains("Initial Catalog"));
                     var connectionStringTransformedInitialCatalogSegment =
@@ -126,7 +127,7 @@ namespace Web.IntegrationTests
                     var transformedConnectionString = connectionString.Replace(
                         connectionStringInitialCatalogSegment,
                         connectionStringTransformedInitialCatalogSegment);
-                    
+
                     configBuilder.AddInMemoryCollection(
                         new Dictionary<string, string>
                         {
