@@ -31,9 +31,16 @@ namespace Web
 
             var host = hostBuilder.Build();
 
-            await InitializeApplicationAsync(host);
-
-            await host.RunAsync();
+            try
+            {
+                await InitializeApplicationAsync(host);
+                await host.RunAsync();
+            }
+            catch (Exception ex)
+            {            
+                var logger = host.Services.GetService<ILogger<Program>>();
+                logger.LogError($"Error on startup:{Environment.NewLine}{ex}");
+            }
         }
 
         public static IWebHostBuilder
