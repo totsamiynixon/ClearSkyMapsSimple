@@ -4,8 +4,8 @@
 
 | Branch/Process | Basic         | Containerized  |
 | -------------  |:-------------:| --------------:|
-| master         | [![Build Status](https://dev.azure.com/bsac2020/ClearSkyMapsSimple-Basic/_apis/build/status/ClearSkyMapsSimple/ClearSkyMapsSimple-Basic-CI?branchName=master)](https://dev.azure.com/bsac2020/ClearSkyMapsSimple-Basic/_build/latest?definitionId=12&branchName=master) | none          |
-| staging        | [![Build Status](https://dev.azure.com/bsac2020/ClearSkyMapsSimple-Basic/_apis/build/status/ClearSkyMapsSimple/ClearSkyMapsSimple-Basic-Staging-CI?branchName=staging)](https://dev.azure.com/bsac2020/ClearSkyMapsSimple-Basic/_build/latest?definitionId=14&branchName=staging)|  none |
+| master         | [![Build Status](https://dev.azure.com/bsac2020/ClearSkyMapsSimple-Basic/_apis/build/status/ClearSkyMapsSimple-Basic-CI?branchName=master)](https://dev.azure.com/bsac2020/ClearSkyMapsSimple-Basic/_build/latest?definitionId=19&branchName=master) | [![Build Status](https://dev.azure.com/bsac2020/ClearSkyMapsSimple-Containerized/_apis/build/status/ClearSkyMapsSimple-Containerized-CI?branchName=master)](https://dev.azure.com/bsac2020/ClearSkyMapsSimple-Containerized/_build/latest?definitionId=17&branchName=master)          |
+| staging        | [![Build Status](https://dev.azure.com/bsac2020/ClearSkyMapsSimple-Basic/_apis/build/status/ClearSkyMapsSimple-Basic-Staging-CI?branchName=master)](https://dev.azure.com/bsac2020/ClearSkyMapsSimple-Basic/_build/latest?definitionId=21&branchName=master)|  Not Supported Yet |
 
 ## Description
 This project is used for building safe routes without toxic and dangerous areas

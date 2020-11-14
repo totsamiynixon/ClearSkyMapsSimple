@@ -119,6 +119,7 @@ namespace Web.IntegrationTests
                 {
                     var config = configBuilder.Build();
                     var connectionString = config.GetSection("Settings").GetValue<string>("ConnectionString");
+                    _testOutputHelper.WriteLine($"Configuration: {Environment.NewLine}{config.GetDebugView()}");
                     var connectionStringInitialCatalogSegment =
                         connectionString.Split(";").First(z => z.Contains("Initial Catalog"));
                     var connectionStringTransformedInitialCatalogSegment =
