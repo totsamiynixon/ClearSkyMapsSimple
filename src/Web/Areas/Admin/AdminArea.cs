@@ -161,6 +161,7 @@ namespace Web.Areas.Admin
                 {
                     options.Cookie.Name = AuthSettings.CookieName;
                     options.LoginPath = new PathString($"/{AdminArea.DefaultRoutePrefix}/account/login");
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                     //TODO: fix for Google , investigate, how it affects other browsers
                     options.Cookie.SameSite = SameSiteMode.Lax;
                 })
