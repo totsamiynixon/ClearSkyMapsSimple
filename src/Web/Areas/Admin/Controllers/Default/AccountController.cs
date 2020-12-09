@@ -52,7 +52,7 @@ namespace Web.Areas.Admin.Controllers.Default
             //TODO: check how to manage that through SignInManager
             if (await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                await Authenticate(model.Email, string.Join(",", await _userManager.GetRolesAsync(user)));
+                await Authenticate(model.Email, string.Join(",", await _userManager.GetRolesAsync(user)), model.RememberMe);
                 return Redirect(returnUrl ?? $"/{AdminArea.DefaultRoutePrefix}");
             }
 
@@ -66,7 +66,7 @@ namespace Web.Areas.Admin.Controllers.Default
             return RedirectToAction("Login", "Account");
         }
         
-        private async Task Authenticate(string userName, string roles)
+        private async Task Authenticate(string userName, string roles, bool isPersistent)
         {
             var claims = new List<Claim>
             {
@@ -74,7 +74,10 @@ namespace Web.Areas.Admin.Controllers.Default
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, roles)
             };
             ClaimsIdentity id = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme, ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id), new AuthenticationProperties
+            {
+                IsPersistent = isPersistent
+            });
         }
 
     }
