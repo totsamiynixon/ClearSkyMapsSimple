@@ -68,7 +68,7 @@ namespace Web.UnitTests.Application.Readings.Commands
         public async Task Handler_should_throw_exception_if_sensor_not_found()
         {
             //Arrange
-            var apiKey = CryptoHelper.GenerateApiKey();
+            var apiKey = ApiKeyHelper.Generate();
             var notExistingApiKey = apiKey.Reverse().ToString();
             var fakeStaticSensor = new StaticSensor {Id = 1, ApiKey = apiKey};
             var fakeReading = new SensorReadingDTO();
@@ -92,7 +92,7 @@ namespace Web.UnitTests.Application.Readings.Commands
         public async Task Handler_return_true_if_reading_is_for_portable_sensor()
         {
             //Arrange
-            var apiKey = CryptoHelper.GenerateApiKey();
+            var apiKey = ApiKeyHelper.Generate();
             var fakePortableSensor = new PortableSensor() {Id = 1, ApiKey = apiKey};
             var fakeReading = new SensorReadingDTO();
 
@@ -115,7 +115,7 @@ namespace Web.UnitTests.Application.Readings.Commands
         public async Task Handler_publish_notification_if_reading_is_for_portable_sensor()
         {
             //Arrange
-            var apiKey = CryptoHelper.GenerateApiKey();
+            var apiKey = ApiKeyHelper.Generate();
             var fakePortableSensor = new PortableSensor() {Id = 1, ApiKey = apiKey};
             var fakePortableSensorReading = new PortableSensorReading();
             var fakeReading = new SensorReadingDTO();
@@ -145,7 +145,7 @@ namespace Web.UnitTests.Application.Readings.Commands
         public async Task Handler_return_true_if_reading_is_for_static_sensor()
         {
             //Arrange
-            var apiKey = CryptoHelper.GenerateApiKey();
+            var apiKey = ApiKeyHelper.Generate();
             var fakeStaticSensor = new StaticSensor {Id = 1, ApiKey = apiKey};
             var fakeStaticSensorReading = new StaticSensorReading();
             var fakeReadingDTO = new SensorReadingDTO();
@@ -173,7 +173,7 @@ namespace Web.UnitTests.Application.Readings.Commands
         public async Task Handler_update_database_if_reading_is_for_static_sensor()
         {
             //Arrange
-            var apiKey = CryptoHelper.GenerateApiKey();
+            var apiKey = ApiKeyHelper.Generate();
             var fakeStaticSensor = new StaticSensor {Id = 1, ApiKey = apiKey};
             var fakeStaticSensorReading = new StaticSensorReading();
             var fakeReadingDTO = new SensorReadingDTO();
@@ -205,7 +205,7 @@ namespace Web.UnitTests.Application.Readings.Commands
         public async Task Handler_publish_notification_if_reading_is_for_static_sensor()
         {
             //Arrange
-            var apiKey = CryptoHelper.GenerateApiKey();
+            var apiKey = ApiKeyHelper.Generate();
             var fakeStaticSensor = new StaticSensor {Id = 1, ApiKey = apiKey};
             var fakeStaticSensorReading = new StaticSensorReading();
             var fakeReadingDTO = new SensorReadingDTO();

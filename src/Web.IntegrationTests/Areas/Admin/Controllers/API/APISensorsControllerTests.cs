@@ -48,7 +48,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
             var client = server.CreateClient();
 
             var staticSensor = new CreateStaticSensorModel
-                {ApiKey = CryptoHelper.GenerateApiKey(), Latitude = Defaults.Latitude, Longitude = Defaults.Longitude};
+                {ApiKey = ApiKeyHelper.Generate(), Latitude = Defaults.Latitude, Longitude = Defaults.Longitude};
             var staticSensorJsonStr = JsonConvert.SerializeObject(staticSensor);
 
             //Act
@@ -86,7 +86,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.API
                 .BuildAsync();
             var client = server.CreateClient();
 
-            var portableSensor = new CreatePortableSensorModel {ApiKey = CryptoHelper.GenerateApiKey()};
+            var portableSensor = new CreatePortableSensorModel {ApiKey = ApiKeyHelper.Generate()};
             var portableSensorJsonStr = JsonConvert.SerializeObject(portableSensor);
 
             //Act

@@ -58,7 +58,7 @@ namespace Web.UnitTests.Areas.Admin.Application.Readings.Commands
         public async Task Handler_should_update_database_with_sensor_with_provided_params()
         {
             //Arrange
-            var apiKey = CryptoHelper.GenerateApiKey();
+            var apiKey = ApiKeyHelper.Generate();
 
             _dataContextMock.Setup(x => x.StaticSensors).ReturnsDbSet(new List<StaticSensor>());
             _dataContextFactoryMock.Setup(x => x.Create()).Returns(_dataContextMock.Object);
@@ -82,7 +82,7 @@ namespace Web.UnitTests.Areas.Admin.Application.Readings.Commands
         public async Task Handler_should_return_created_sensor_dto_with_provided_params()
         {
             //Arrange
-            var apiKey = CryptoHelper.GenerateApiKey();
+            var apiKey = ApiKeyHelper.Generate();
 
             _dataContextMock.Setup(x => x.StaticSensors).ReturnsDbSet(new List<StaticSensor>());
             _dataContextFactoryMock.Setup(x => x.Create()).Returns(_dataContextMock.Object);

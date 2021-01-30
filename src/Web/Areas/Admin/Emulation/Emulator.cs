@@ -73,7 +73,7 @@ namespace Web.Areas.Admin.Emulation
         private (SensorEmulator emulator, StaticSensor sensor) GetStaticFakeSensor(string guid)
         {
 
-            var apiKey = CryptoHelper.GenerateApiKey();
+            var apiKey = ApiKeyHelper.Generate();
             var sensorEmulator = new SensorEmulator(guid, _appSettings.ServerUrl, apiKey, typeof(StaticSensor));
             var sensor = new StaticSensor
             {
@@ -87,7 +87,7 @@ namespace Web.Areas.Admin.Emulation
 
         private (SensorEmulator emulator, PortableSensor sensor) GetPortableFakeSensor(string guid)
         {
-            var apiKey = CryptoHelper.GenerateApiKey();
+            var apiKey = ApiKeyHelper.Generate();
             var sensorEmulator = new SensorEmulator(guid, _appSettings.ServerUrl, apiKey, typeof(PortableSensor));
             var sensor = new PortableSensor
             {

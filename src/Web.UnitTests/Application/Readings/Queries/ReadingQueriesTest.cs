@@ -54,7 +54,7 @@ namespace Web.UnitTests.Application.Readings.Queries
         public async Task Get_Static_Sensors_Success()
         {
             //Arrange
-            var fakeApiKey = CryptoHelper.GenerateApiKey();
+            var fakeApiKey = ApiKeyHelper.Generate();
             var fakeStaticSensorReading = new StaticSensorReading {Id = 1, StaticSensorId = 1};
             var fakeStaticSensor = new StaticSensor
             {

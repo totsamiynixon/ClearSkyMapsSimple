@@ -82,7 +82,7 @@ namespace Web.Areas.Admin
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.MinimumSameSitePolicy = SameSiteMode.Lax;
             });
 
             ConfigureAuthentication(services);
@@ -162,8 +162,8 @@ namespace Web.Areas.Admin
                     options.Cookie.Name = AuthSettings.CookieName;
                     options.LoginPath = new PathString($"/{AdminArea.DefaultRoutePrefix}/account/login");
                     options.ExpireTimeSpan = TimeSpan.FromDays(1);
-                    //TODO: fix for Google , investigate, how it affects other browsers
-                    options.Cookie.SameSite = SameSiteMode.Lax;
+                    options.Cookie.SameSite = SameSiteMode.Strict;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
                 })
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {

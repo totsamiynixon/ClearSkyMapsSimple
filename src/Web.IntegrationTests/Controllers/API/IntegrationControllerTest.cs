@@ -32,7 +32,7 @@ namespace Web.IntegrationTests.Controllers.API
             {
                 new StaticSensor
                 {
-                    ApiKey = CryptoHelper.GenerateApiKey(),
+                    ApiKey = ApiKeyHelper.Generate(),
                     Latitude = latitude, 
                     Longitude = longitude,
                     IsActive = true, 
@@ -41,7 +41,7 @@ namespace Web.IntegrationTests.Controllers.API
                 },
                 new PortableSensor
                 {
-                    ApiKey = CryptoHelper.GenerateApiKey(),
+                    ApiKey = ApiKeyHelper.Generate(),
                     IsActive = true
                 }
             };
