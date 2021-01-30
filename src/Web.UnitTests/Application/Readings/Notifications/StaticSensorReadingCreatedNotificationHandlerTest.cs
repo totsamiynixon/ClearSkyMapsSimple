@@ -68,7 +68,7 @@ namespace Web.UnitTests.Application.Readings.Notifications
             var fakeSensor = new StaticSensor
             {
                 Id = 1,
-                ApiKey = CryptoHelper.GenerateApiKey(),
+                ApiKey = ApiKeyHelper.Generate(),
                 IsActive = true,
                 IsVisible = true,
                 Readings = new List<StaticSensorReading> {fakeReading}
@@ -105,7 +105,7 @@ namespace Web.UnitTests.Application.Readings.Notifications
             var fakeSensor = new StaticSensor
             {
                 Id = 1,
-                ApiKey = CryptoHelper.GenerateApiKey(),
+                ApiKey = ApiKeyHelper.Generate(),
                 IsActive = true,
                 IsVisible = true,
                 Readings = new List<StaticSensorReading> {fakeReading}

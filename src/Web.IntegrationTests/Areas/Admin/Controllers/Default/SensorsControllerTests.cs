@@ -102,7 +102,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
                 },
                 {
                     $"{nameof(CreateStaticSensorViewModel.Model)}.{nameof(CreateStaticSensorModel.ApiKey)}",
-                    (CryptoHelper.GenerateApiKey())
+                    (ApiKeyHelper.Generate())
                 }
             };
 
@@ -163,7 +163,7 @@ namespace Web.IntegrationTests.Areas.Admin.Controllers.Default
             {
                 {
                     $"{nameof(CreatePortableSensorViewModel.Model)}.{nameof(CreatePortableSensorModel.ApiKey)}",
-                    (CryptoHelper.GenerateApiKey())
+                    (ApiKeyHelper.Generate())
                 }
             };
 

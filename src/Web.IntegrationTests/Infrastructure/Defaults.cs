@@ -11,7 +11,7 @@ namespace Web.IntegrationTests.Infrastructure
 
         public static StaticSensor StaticSensor => new StaticSensor
         {
-            ApiKey = CryptoHelper.GenerateApiKey(),
+            ApiKey = ApiKeyHelper.Generate(),
             Latitude = Latitude,
             Longitude = Longitude,
             IsActive = false,
@@ -21,7 +21,7 @@ namespace Web.IntegrationTests.Infrastructure
         
         public static StaticSensor ActiveStaticSensor => new StaticSensor
         {
-            ApiKey = CryptoHelper.GenerateApiKey(),
+            ApiKey = ApiKeyHelper.Generate(),
             Latitude = Latitude,
             Longitude = Longitude,
             IsActive = true,
@@ -31,7 +31,7 @@ namespace Web.IntegrationTests.Infrastructure
         
         public static StaticSensor ActiveAndVisibleStaticSensor => new StaticSensor
         {
-            ApiKey = CryptoHelper.GenerateApiKey(),
+            ApiKey = ApiKeyHelper.Generate(),
             Latitude = Latitude,
             Longitude = Longitude,
             IsActive = true,
@@ -41,7 +41,7 @@ namespace Web.IntegrationTests.Infrastructure
         
         public static StaticSensor DeletedStaticSensor => new StaticSensor
         {
-            ApiKey = CryptoHelper.GenerateApiKey(),
+            ApiKey = ApiKeyHelper.Generate(),
             Latitude = Latitude,
             Longitude = Longitude,
             IsActive = false,
@@ -52,19 +52,19 @@ namespace Web.IntegrationTests.Infrastructure
 
         public static PortableSensor PortableSensor => new PortableSensor
         {
-            ApiKey = CryptoHelper.GenerateApiKey(),
+            ApiKey = ApiKeyHelper.Generate(),
             IsActive = false
         };
         
         public static PortableSensor ActivePortableSensor => new PortableSensor
         {
-            ApiKey = CryptoHelper.GenerateApiKey(),
+            ApiKey = ApiKeyHelper.Generate(),
             IsActive = true
         };
         
         public static PortableSensor DeletedPortableSensor => new PortableSensor
         {
-            ApiKey = CryptoHelper.GenerateApiKey(),
+            ApiKey = ApiKeyHelper.Generate(),
             IsActive = false,
             IsDeleted = true
         };

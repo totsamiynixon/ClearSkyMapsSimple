@@ -60,7 +60,7 @@ namespace Web.Areas.Admin.Controllers.Default
         {
             return View(new CreateStaticSensorViewModel(new CreateStaticSensorModel
             {
-                ApiKey = CryptoHelper.GenerateApiKey()
+                ApiKey = ApiKeyHelper.Generate()
             }));
         }
 
@@ -87,7 +87,7 @@ namespace Web.Areas.Admin.Controllers.Default
         {
             return View(new CreatePortableSensorViewModel(new CreatePortableSensorModel
             {
-                ApiKey = CryptoHelper.GenerateApiKey()
+                ApiKey = ApiKeyHelper.Generate()
             }));
         }
 
