@@ -1,17 +1,15 @@
-﻿jQuery(function ($) {
+﻿jQuery($ => {
     window.CSM.offlinePage = {
         template: "#offlinePageTemplate",
-        data: function () {
-            return {
-                offline: true
-            }
-        },
+        data: () => ({
+            offline: true
+        }),
         mounted: function () {
-            var that = this;
-            window.addEventListener('offline', function () {
+            const that = this;
+            window.addEventListener('offline', () => {
                 that.offline = true;
             });
-            window.addEventListener('online', function () {
+            window.addEventListener('online', () => {
                 that.offline = false;
             });
         },

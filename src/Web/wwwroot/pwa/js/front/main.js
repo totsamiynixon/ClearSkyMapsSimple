@@ -1,19 +1,18 @@
-﻿jQuery(function ($) {
+﻿jQuery($ => {
     window.CSM = {
-        askForPermissioToReceiveNotifications: function () {
-            return new Promise(function (resolve, reject) {
-                const messaging = firebase.messaging();
-                messaging.requestPermission().then(function () {
-                    messaging.getToken().then(function (token) {
-                        console.log('token do usuário:', token);
-                        resolve(token);
-                    }).catch(reject);;
-                }).catch(function (error) {
-                    console.error(error);
-                    reject();
-                });
-            })
-        }
+        askForPermissioToReceiveNotifications: () => new Promise((resolve, reject) => {
+            const messaging = firebase.messaging();
+            messaging.requestPermission().then(() => {
+                messaging.getToken().then(token => {
+                    console.log('token do usuário:', token);
+                    resolve(token);
+                }).catch(reject);
+                ;
+            }).catch(error => {
+                console.error(error);
+                reject();
+            });
+        })
     }
 });
 

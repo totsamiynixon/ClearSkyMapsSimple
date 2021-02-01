@@ -1,38 +1,36 @@
-﻿jQuery(function ($) {
+﻿jQuery($ => {
     window.CSM.readingsPage = {
         template: '#readingsPageTemplate',
-        data: function () {
-            return {
-                sensors: [],
-                currentSensor: {
-                    readings: []
-                },
-                table: {
-                    collapsed: true
-                },
-                chart: {
-                    currentParameter: "cO2",
-                    instance: null,
-                    dataset: []
-                },
-                markers: [],
-                map: null,
-                hub: {
-                    instance: null,
-                    isActive: false
-                }
+        data: () => ({
+            sensors: [],
+            currentSensor: {
+                readings: []
+            },
+            table: {
+                collapsed: true
+            },
+            chart: {
+                currentParameter: "cO2",
+                instance: null,
+                dataset: []
+            },
+            markers: [],
+            map: null,
+            hub: {
+                instance: null,
+                isActive: false
             }
-        },
+        }),
         mounted: function () {
-            var app = this;
+            const app = this;
             $.ajax({
                 type: "GET",
                 url: "api/sensors",
                 dataType: "JSON",
-                success: function (responce) {
+                success: responce => {
                     app.sensors = app.sensors.concat(responce);
                     app.initHub();
-                    ymaps.ready(function () {
+                    ymaps.ready(() => {
                         app.initMap();
                         app.initMarkers();
                     });
@@ -60,9 +58,9 @@
                 this.initDataset();
             },
             subscribeOnSensor: function () {
-                var that = this;
-                window.CSM.askForPermissioToReceiveNotifications().then(function (token) {
-                    var sensors = JSON.parse(localStorage.getItem("subscribedOnSensors")) || [];
+                const that = this;
+                window.CSM.askForPermissioToReceiveNotifications().then(token => {
+                    const sensors = JSON.parse(localStorage.getItem("subscribedOnSensors")) || [];
                     if (sensors.indexOf(that.currentSensor.id) == -1) {
                         $.ajax({
                             type: "POST",
@@ -72,12 +70,12 @@
                                 sensorId: that.currentSensor.id,
                                 registrationToken: token
                             }),
-                            success: function (responce) {
+                            success: responce => {
                                 sensors.push(that.currentSensor.id);
                                 localStorage.setItem("subscribedOnSensors", JSON.stringify(sensors));
                                 alert("Успешно подписан");
                             },
-                            error: function (error) {
+                            error: error => {
                                 alert("Ошибка");
                             }
                         });
@@ -88,9 +86,9 @@
                 });
             },
             unsubscribeFromSensor: function () {
-                var that = this;
-                window.CSM.askForPermissioToReceiveNotifications().then(function (token) {
-                    var sensors = JSON.parse(localStorage.getItem("subscribedOnSensors")) || [];
+                const that = this;
+                window.CSM.askForPermissioToReceiveNotifications().then(token => {
+                    const sensors = JSON.parse(localStorage.getItem("subscribedOnSensors")) || [];
                     if (sensors.indexOf(that.currentSensor.id) == -1) {
                         alert("Уже отписан");
                     }
@@ -102,15 +100,15 @@
                             sensorId: that.currentSensor.id,
                             registrationToken: token
                         }),
-                        success: function (responce) {
-                            var index = sensors.indexOf(that.currentSensor.id);
+                        success: responce => {
+                            const index = sensors.indexOf(that.currentSensor.id);
                             if (index != -1) {
                                 sensors.splice(index, 1);
                             }
                             localStorage.setItem("subscribedOnSensors", JSON.stringify(sensors));
                             alert("Успешно отписан");
                         },
-                        error: function (error) {
+                        error: error => {
                             alert("Ошибка");
                         }
                     });
@@ -119,8 +117,8 @@
         },
         computed: {
             isSubscribed: function () {
-                var that = this;
-                var sensors = JSON.parse(localStorage.getItem("subscribedOnSensors")) || [];
+                const that = this;
+                const sensors = JSON.parse(localStorage.getItem("subscribedOnSensors")) || [];
                 return sensors.indexOf(that.currentSensor.id) != -1;
             }
         },
@@ -134,7 +132,7 @@
             }
         },
         beforeRouteLeave: function (to, from, next) {
-            var that = this;
+            const that = this;
             //that.hub.isActive = false;
             next();
         }
@@ -144,13 +142,13 @@
 
     //HUB
     function initHub() {
-        var that = this;
+        const that = this;
         that.hub.instance = new signalR.HubConnectionBuilder()
             .withUrl("/pwahub")
             .configureLogging(signalR.LogLevel.Information)
             .build();
-        that.hub.instance.on("DispatchReading", function (readingModel) {
-            var sensor = that.sensors.find(function (e, i, a) {
+        that.hub.instance.on("DispatchReadingAsync", readingModel => {
+            const sensor = that.sensors.find((e, i, a) => {
                 if (e.id == readingModel.sensorId) {
                     return e;
                 }
@@ -165,7 +163,7 @@
             }
             that.updateMarker(sensor);
         });
-        that.hub.instance.start().then(function () {
+        that.hub.instance.start().then(() => {
             that.hub.isActive = true;
             //$.connection.hub.disconnected(function () {
             //    if (!that.hub.isActive) {
@@ -191,17 +189,17 @@
     }
 
     function initMarkers() {
-        var that = this;
-        that.sensors.forEach(function (sensor, index, arrya) {
-            var reading = sensor.readings[0];
+        const that = this;
+        that.sensors.forEach((sensor, index, arrya) => {
+            const reading = sensor.readings[0];
             if (typeof (reading) === "undefined") {
                 return;
             }
-            var marker = {
+            const marker = {
                 sensorId: sensor.id,
                 value: createMarker(sensor)
             };
-            marker.value.events.add('click', function () {
+            marker.value.events.add('click', () => {
                 that.currentSensor = sensor;
                 $('#sensor-details').modal('show')
             });
@@ -211,27 +209,25 @@
     }
 
     function createMarker(sensor) {
-        var that = this;
-        var marker = new ymaps.Circle([
+        const that = this;
+        const marker = new ymaps.Circle([
             [sensor.latitude, sensor.longitude],
             1000
         ], {
-                hintContent: "Уровень загрязнения " + sensor.pollutionLevel
-            }, {
-                draggable: false,
-                fillColor: getFillColor(sensor.pollutionLevel),
-                strokeColor: getStrokeColor(sensor.pollutionLevel),
-                strokeOpacity: 0.8,
-                fillOpacity: 0.6,
-                strokeWidth: 3
-            });
+            hintContent: "Уровень загрязнения " + sensor.pollutionLevel
+        }, {
+            draggable: false,
+            fillColor: getFillColor(sensor.pollutionLevel),
+            strokeColor: getStrokeColor(sensor.pollutionLevel),
+            strokeOpacity: 0.8,
+            fillOpacity: 0.6,
+            strokeWidth: 3
+        });
         return marker;
     }
     function updateMarker(sensor) {
-        var that = this;
-        var marker = that.markers.find(function (marker) {
-            return marker.sensorId == sensor.id;
-        });
+        const that = this;
+        const marker = that.markers.find(marker => marker.sensorId == sensor.id);
         if (marker == null) {
             return;
         }
@@ -240,7 +236,7 @@
     }
 
     function initChart() {
-        var config = {
+        const config = {
             type: 'line',
             data: {
                 labels: [],
@@ -277,26 +273,22 @@
                 }
             }
         };
-        var ctx = document.getElementById('chart').getContext('2d');
+        const ctx = document.getElementById('chart').getContext('2d');
         this.chart.instance = new Chart(ctx, config);
     }
 
     function initDataset() {
-        var that = this;
+        const that = this;
         if (that.chart.instance == null) {
             return;
         }
         that.chart.instance.data.datasets = [];
-        that.chart.instance.data.labels = this.currentSensor.readings.map(function (reading) {
-            return moment(reading.created).format('h:mm:ss');
-        });
+        that.chart.instance.data.labels = this.currentSensor.readings.map(reading => moment(reading.created).format('h:mm:ss'));
         that.chart.dataset = {
             label: this.chart.currentParameter.toUpperCase(),
             backgroundColor: "#fff",
             borderColor: "#c2c2c2c2",
-            data: this.currentSensor.readings.map(function (reading) {
-                return reading[that.chart.currentParameter];
-            }),
+            data: this.currentSensor.readings.map(reading => reading[that.chart.currentParameter]),
             fill: false,
         }
         that.chart.instance.data.datasets.push(that.chart.dataset);
@@ -304,8 +296,8 @@
     }
 
     function updateDataset() {
-        var that = this;
-        var reading = that.currentSensor.readings[0];
+        const that = this;
+        const reading = that.currentSensor.readings[0];
         if (typeof (reading) === "undefined") {
             return;
         }
