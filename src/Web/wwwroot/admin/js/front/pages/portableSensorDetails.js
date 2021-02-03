@@ -1,6 +1,6 @@
-﻿jQuery(function ($) {
-    window.CSM_Admin.addModule("PortableSensorDetails", function (options) {
-        var app = new Vue({
+﻿jQuery($ => {
+    window.CSM_Admin.addModule("PortableSensorDetails", options => {
+        const app = new Vue({
             el: '#app',
             template: "#portableSensorDetailsPageTemplate",
             data: {
@@ -24,26 +24,26 @@
                 initMap: initMap
             },
             mounted: function () {
-                var that = this;
+                const that = this;
                 that.initHub();
-                ymaps.ready(function () {
+                ymaps.ready(() => {
                     that.initMap();
                 });
             }
-        })
+        });
 
 
         //HUB
         function initHub() {
-            var that = this;
+            const that = this;
             that.hub.instance = new signalR.HubConnectionBuilder()
                 .withUrl("/adminportable")
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
-            that.hub.instance.on("DispatchReading", function (readingModel) {
+            that.hub.instance.on("DispatchReadingAsync", readingModel => {
                 that.sensor.latestReadings = readingModel;
             });
-            that.hub.instance.on("DispatchCoordinates", function (coordinatesModel) {
+            that.hub.instance.on("DispatchCoordinatesAsync", coordinatesModel => {
                 that.sensor.latitude = coordinatesModel.latitude;
                 that.sensor.longitude = coordinatesModel.longitude;
                 if (!that.sensorMarker) {
@@ -53,22 +53,22 @@
                     that.updateMarker();
                 }
             });
-            that.hub.instance.start().then(function () {
+            that.hub.instance.start().then(() => {
                 that.hub.instance.invoke("ListenForSensor", that.sensor.id);
                 that.hub.isActive = true;
-                //$.connection.hub.disconnected(function () {
-                //    if (!that.hub.isActive) {
-                //        return;
-                //    }
-                //    setTimeout(function () {
-                //        $.connection.hub.start();
-                //    }, 5000);
-                //});
+/*                $.connection.hub.disconnected(function () {
+                    if (!that.hub.isActive) {
+                        return;
+                    }
+                    setTimeout(function () {
+                        $.connection.hub.start();
+                    }, 5000);
+                });*/
             });
         }
 
         function initMap() {
-            var that = this;
+            const that = this;
             that.map = new ymaps.Map("map", {
                 center: [53.904502, 27.561261],
                 zoom: 18,
@@ -79,7 +79,7 @@
                 });
         }
         function initMarker() {
-            var that = this;
+            const that = this;
             that.sensorMarker = new ymaps.Placemark([that.sensor.latitude, that.sensor.longitude], {
                 balloonContent: 'Положение датчика'
             }, {
@@ -90,7 +90,7 @@
             that.map.geoObjects.add(that.sensorMarker);
         }
         function updateMarker() {
-            var that = this;
+            const that = this;
             that.sensorMarker.geometry.setCoordinates([that.sensor.latitude, that.sensor.longitude]);
         }
     })

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
@@ -67,19 +68,19 @@ namespace Web.Controllers.API
             try
             {
                 var trimmed = data.Trim(';');
-                var groupes = trimmed.Split(",").Select(x => x.Replace('.', ',')).ToArray();
+                var groupes = trimmed.Split(",").ToArray();
                 return (apiKey: groupes[0], reading: new SensorReadingDTO
                 {
-                    Temp = float.Parse(groupes[1]),
-                    Hum = float.Parse(groupes[2]),
-                    Preassure = float.Parse(groupes[3]),
-                    CO2 = float.Parse(groupes[4]),
-                    LPG = float.Parse(groupes[5]),
-                    CO = float.Parse(groupes[6]),
-                    CH4 = float.Parse(groupes[7]),
-                    Dust = float.Parse(groupes[8]),
-                    Longitude = float.Parse(groupes[9]),
-                    Latitude = float.Parse(groupes[10])
+                    Temp = float.Parse(groupes[1], CultureInfo.InvariantCulture),
+                    Hum = float.Parse(groupes[2], CultureInfo.InvariantCulture),
+                    Preassure = float.Parse(groupes[3], CultureInfo.InvariantCulture),
+                    CO2 = float.Parse(groupes[4], CultureInfo.InvariantCulture),
+                    LPG = float.Parse(groupes[5], CultureInfo.InvariantCulture),
+                    CO = float.Parse(groupes[6], CultureInfo.InvariantCulture),
+                    CH4 = float.Parse(groupes[7], CultureInfo.InvariantCulture),
+                    Dust = float.Parse(groupes[8], CultureInfo.InvariantCulture),
+                    Longitude = float.Parse(groupes[9], CultureInfo.InvariantCulture),
+                    Latitude = float.Parse(groupes[10], CultureInfo.InvariantCulture)
                 });
             }
             catch (Exception ex)

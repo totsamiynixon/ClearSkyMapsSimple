@@ -1,14 +1,14 @@
-﻿jQuery(function ($) {
-    window.CSM_Admin.addModule("Sensors", function (options) {
-        var hub = {
+﻿jQuery($ => {
+    window.CSM_Admin.addModule("Sensors", options => {
+        const hub = {
             instance: null,
             isActive: false
         };
-        var map = null;
-        var sensors = options.sensors;
-        var markers = [];
+        let map = null;
+        const sensors = options.sensors;
+        const markers = [];
         initHub();
-        ymaps.ready(function () {
+        ymaps.ready(() => {
             initMap();
             initMarkers();
         });
@@ -19,26 +19,24 @@
                 .withUrl("/adminstatic")
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
-            hub.instance.on("DispatchReading", function (readingModel) {
-                var sensor = sensors.find(function (sensor) {
-                    return sensor.id == readingModel.sensorId;
-                });
+            hub.instance.on("DispatchReadingAsync", readingModel => {
+                const sensor = sensors.find(sensor => sensor.id == readingModel.sensorId);
                 if (!sensor) {
                     return;
                 }
                 sensor.pollutionLevel = readingModel.pollutionLevel;
                 updateMarker(sensor);
             });
-            hub.instance.start().then(function () {
+            hub.instance.start().then(() => {
                 hub.isActive = true;
-                //$.connection.hub.disconnected(function () {
-                //    if (!hub.isActive) {
-                //        return;
-                //    }
-                //    setTimeout(function () {
-                //        $.connection.hub.start();
-                //    }, 5000);
-                //});
+/*                $.connection.hub.disconnected(function () {
+                    if (!hub.isActive) {
+                        return;
+                    }
+                    setTimeout(function () {
+                        $.connection.hub.start();
+                    }, 5000);
+                });*/
             });
         }
         //MAP
@@ -54,22 +52,22 @@
                 });
         }
         function initMarkers() {
-            sensors.forEach(function (sensor, index, arrya) {
-                var marker = {
+            sensors.forEach((sensor, index, arrya) => {
+                const marker = {
                     sensorId: sensor.id,
                     value: createMarker(sensor)
                 };
-                var dropdown = $("#mapDropdownTemplate");
-                dropdown.click(function (e) {
+                const dropdown = $("#mapDropdownTemplate");
+                dropdown.click(e => {
                     e.stopPropagation();
                 });
-                $(document).click(function () {
+                $(document).click(() => {
                     if (dropdown.css("display") == 'block')
                         dropdown.hide();
                 });
-                marker.value.events.add('click', function (e) {
+                marker.value.events.add('click', e => {
                     e.originalEvent.domEvent.originalEvent.stopPropagation();
-                    var position = e.get("domEvent").get("position");
+                    const position = e.get("domEvent").get("position");
                     dropdown.css({ top: position[1] - dropdown.height() / 2, left: position[0] - dropdown.width(), position: 'absolute' });
                     dropdown.find("[data-href]").each(function () {
                         $(this).attr("href", $(this).data("href") + "?sensorId=" + sensor.id);
@@ -81,25 +79,23 @@
             })
         }
         function createMarker(sensor) {
-            var marker = new ymaps.Circle([
+            const marker = new ymaps.Circle([
                 [sensor.latitude, sensor.longitude],
                 1000
             ], {
-                    hintContent: sensor.isVisible ? ("Уровень загрязнения " + sensor.pollutionLevel) : ""
-                }, {
-                    draggable: false,
-                    fillColor: getFillColor(sensor.pollutionLevel, sensor.isVisible),
-                    strokeColor: getStrokeColor(sensor.pollutionLevel, sensor.isVisible),
-                    strokeOpacity: 0.8,
-                    fillOpacity: 0.6,
-                    strokeWidth: 3
-                });
+                hintContent: sensor.isVisible ? ("Уровень загрязнения " + sensor.pollutionLevel) : ""
+            }, {
+                draggable: false,
+                fillColor: getFillColor(sensor.pollutionLevel, sensor.isVisible),
+                strokeColor: getStrokeColor(sensor.pollutionLevel, sensor.isVisible),
+                strokeOpacity: 0.8,
+                fillOpacity: 0.6,
+                strokeWidth: 3
+            });
             return marker;
         }
         function updateMarker(sensor) {
-            var marker = markers.find(function (marker) {
-                return marker.sensorId == sensor.id;
-            });
+            const marker = markers.find(marker => marker.sensorId == sensor.id);
             if (marker == null) {
                 return;
             }

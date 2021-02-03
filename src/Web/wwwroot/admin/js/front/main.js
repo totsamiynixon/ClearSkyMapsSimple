@@ -1,16 +1,14 @@
-﻿jQuery(function ($) {
-    var adminModule = {};
+﻿jQuery($ => {
+    const adminModule = {};
     window.CSM_Admin = {
-        addModule: function (name, value) {
+        addModule: (name, value) => {
             adminModule[name] = value;
         },
-        getModule: function (name) {
-            return adminModule[name];
-        }
+        getModule: name => adminModule[name]
     }
 })
 
-Vue.filter('toTime', function (value) {
+Vue.filter('toTime', value => {
     if (value) {
         return moment(value).format('h:mm:ss');
     }

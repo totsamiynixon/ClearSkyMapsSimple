@@ -1,4 +1,6 @@
-﻿namespace Web.Models.API.Sensors
+﻿using System;
+
+namespace Web.Models.API.Sensors
 {
     public class StaticSensorReadingModel
     {
@@ -12,5 +14,6 @@
         public float Preassure { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
+        public DateTime Created { get; set; }
     }
 }

@@ -1,6 +1,6 @@
-﻿jQuery(function ($) {
+﻿jQuery($ => {
     //filters
-    Vue.filter('toTime', function (value) {
+    Vue.filter('toTime', value => {
         if (value) {
             return moment(value).format('h:mm:ss');
         }
